@@ -41,17 +41,25 @@ public class GraphTest {
         VertexString vsB = new VertexString("B");
         Vertex vB = new Vertex(vsB);
         int index = vertexes.indexOf(vB);
-        System.out.println("index = " + index);
+        assertTrue(index == 1);
     }
 
     @Test
     public void testAddEdge() throws Exception {
-
+        Vertex vA = new Vertex(new VertexString("A"));
+        Vertex vC = new Vertex(new VertexString("C"));
+        Edge edge = new Edge(vA, vC);
+        Vector<Edge> edges = graph.getEdges();
+        int index = edges.indexOf(edge);
+        assertTrue(index == 0);
     }
 
     @Test
     public void testGetAdjMatrix() throws Exception {
-
+        int[][] adjMatrix = graph.getAdjMatrix();
+        assertTrue(adjMatrix[0][2] == 1);
+        assertTrue(adjMatrix[2][1] == 1);
+        assertTrue(adjMatrix[2][3] == 1);
     }
 
     @Test

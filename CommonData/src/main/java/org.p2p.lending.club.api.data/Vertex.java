@@ -4,6 +4,8 @@ package org.p2p.lending.club.api.data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 /**
  * Created by tczhaodachuan on 7/1/2015.
  */
@@ -52,6 +54,6 @@ public class Vertex {
             return 0;
         }
 
-        return vertexData.hashCode();
+        return Objects.hashCode(vertexData);
     }
 }

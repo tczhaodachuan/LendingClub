@@ -2,6 +2,8 @@ package org.p2p.lending.club.api.data.impl;
 
 import org.p2p.lending.club.api.data.VertexData;
 
+import java.util.Objects;
+
 /**
  * Created by tczhaodachuan on 7/8/2015.
  */
@@ -34,24 +36,19 @@ public class VertexString implements VertexData {
     }
 
     @Override
-    public int compares(VertexData vertexData) {
-        if(vertexData == null)
-        {
-            return 1;
-        }
-
-        if(getClass() != vertexData.getClass())
-        {
-            return -1;
-        }
-
-        VertexString vertexString = (VertexString) vertexData;
-        return value.compareTo(vertexString.value);
+    public int hashCode()
+    {
+        return Objects.hashCode(value);
     }
 
     @Override
     public String toString()
     {
+        if(value == null)
+        {
+            return "";
+        }
+
         return value.toString();
     }
 }
