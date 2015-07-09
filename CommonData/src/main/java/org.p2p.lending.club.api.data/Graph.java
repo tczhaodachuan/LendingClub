@@ -1,5 +1,6 @@
 package org.p2p.lending.club.api.data;
 
+import com.sun.javafx.binding.StringFormatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -141,10 +142,19 @@ public class Graph {
 
     public void printAdjMatrix() {
         int[][] adjMatrix = getAdjMatrix();
+        int max = vertexes.elementAt(0).vertexData.toString().length();
+        for(Vertex v : vertexes)
+        {
+            if(v.vertexData.toString().length() > max)
+            {
+                max = v.vertexData.toString().length();
+            }
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
         for (int i = 0; i < adjMatrix.length; i++) {
-            sb.append("[ ");
+            sb.append(String.format("%-" + max + "s [ ",vertexes.elementAt(i).vertexData));
             for (int j = 0; j < adjMatrix.length; j++) {
                 sb.append(adjMatrix[i][j]).append(" ");
             }
