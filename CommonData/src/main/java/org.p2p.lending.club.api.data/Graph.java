@@ -45,6 +45,79 @@ public class Graph {
         return edges;
     }
 
+    public boolean isCycleExisting()
+    {
+        boolean result = dfs(vertexes.elementAt(0));
+        unvisitVertexes();
+        return result;
+    }
+
+    private void unvisitVertexes()
+    {
+        vertexes.forEach(vertex -> vertex.unvist());
+    }
+
+    private boolean dfs(Vertex v)
+    {
+        if(v.isVisit())
+        {
+            return true;
+        }
+        else
+        {
+            v.visited();
+            Vector<Vertex> neighbors = getNeighbors(v);
+            for(Vertex neighbor : neighbors)
+            {
+                if (dfs(neighbor)) {
+                    return true;
+                }
+            }
+            v.unvist();
+        }
+
+        return false;
+    }
+
+    public Vertex findVertex(VertexData vertexData)
+    {
+        return dfs(vertexData, vertexes.elementAt(0));
+    }
+
+    private Vertex dfs(VertexData vertexData, Vertex v)
+    {
+        if(v.vertexData.equals(vertexData))
+        {
+            return v;
+        }
+        else
+        {
+            Vector<Vertex> neighbors = getNeighbors(v);
+            for(Vertex neighbor : neighbors)
+            {
+                Vertex result = dfs(vertexData, neighbor);
+                if( result != null)
+                {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Vector<Vertex> getNeighbors(Vertex v)
+    {
+        Vector<Vertex> neighbors = new Vector<>();
+        for(Edge edge : edges)
+        {
+            if(edge.v.equals(v) || edge.v == v)
+            {
+                neighbors.add(edge.m);
+            }
+        }
+        return neighbors;
+    }
+
     public int[][] getAdjMatrix() {
         int[][] adjMatrix = new int[vertexes.size()][vertexes.size()];
         // initialization of the adjMatrix

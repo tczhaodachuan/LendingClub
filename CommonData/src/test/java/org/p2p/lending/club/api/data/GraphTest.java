@@ -13,10 +13,12 @@ import static org.junit.Assert.*;
  */
 public class GraphTest {
     private Graph graph;
+    private Graph cycleGraph;
 
     @Before
     public void setUp() throws Exception {
         graph = new Graph();
+        cycleGraph = new Graph();
         VertexString vsA = new VertexString("A");
         Vertex vA = new Vertex(vsA);
         VertexString vsB = new VertexString("B");
@@ -33,6 +35,24 @@ public class GraphTest {
         graph.addEdge(vC, vD);
         graph.addEdge(vC, vB);
 
+
+        cycleGraph.addVertex(vA);
+        cycleGraph.addVertex(vB);
+        cycleGraph.addVertex(vC);
+        cycleGraph.addVertex(vD);
+        cycleGraph.addEdge(vA, vC);
+        cycleGraph.addEdge(vC, vD);
+        cycleGraph.addEdge(vC, vB);
+        cycleGraph.addEdge(vB, vD);
+        cycleGraph.addEdge(vD, vA);
+
+    }
+
+    @Test
+    public void testCycle()
+    {
+        assertTrue(cycleGraph.isCycleExisting());
+        assertFalse(graph.isCycleExisting());
     }
 
     @Test
@@ -60,6 +80,16 @@ public class GraphTest {
         assertTrue(adjMatrix[0][2] == 1);
         assertTrue(adjMatrix[2][1] == 1);
         assertTrue(adjMatrix[2][3] == 1);
+    }
+
+    @Test
+    public void testFindVertex()
+    {
+        Vertex vC = graph.findVertex(new VertexString("C"));
+        assertNotNull(vC);
+
+        Vertex vE = graph.findVertex(new VertexString("E"));
+        assertNull(vE);
     }
 
     @Test
