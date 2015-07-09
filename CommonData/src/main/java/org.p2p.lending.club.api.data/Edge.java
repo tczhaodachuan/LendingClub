@@ -15,21 +15,17 @@ public class Edge {
     }
 
     @Override
-    public boolean equals(Object object)
-    {
-        if(object == null)
-        {
+    public boolean equals(Object object) {
+        if (object == null) {
             return false;
         }
 
-        if(getClass() != object.getClass())
-        {
+        if (getClass() != object.getClass()) {
             return false;
         }
 
         Edge edge = (Edge) object;
-        if(v == edge.v || v.equals(edge.v))
-        {
+        if (v == edge.v || v.equals(edge.v)) {
             return m == edge.m || m.equals(edge.m);
         }
 
@@ -37,10 +33,8 @@ public class Edge {
     }
 
     @Override
-    public int hashCode()
-    {
-        if(v == null || m == null)
-        {
+    public int hashCode() {
+        if (v == null || m == null) {
             return 0;
         }
 
@@ -48,8 +42,7 @@ public class Edge {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return v.vertexData.toString() + " ==> " + m.vertexData.toString();
     }
 }

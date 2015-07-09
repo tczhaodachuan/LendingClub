@@ -11,8 +11,7 @@ public class VertexString implements VertexData {
     protected final String value;
 
     public VertexString(String value) {
-        if(value == null)
-        {
+        if (value == null) {
             throw new IllegalArgumentException();
         }
 
@@ -21,13 +20,11 @@ public class VertexString implements VertexData {
 
     @Override
     public boolean equals(VertexData vertexData) {
-        if(vertexData == null)
-        {
+        if (vertexData == null) {
             return false;
         }
 
-        if(getClass() != vertexData.getClass())
-        {
+        if (getClass() != vertexData.getClass()) {
             return false;
         }
 
@@ -36,16 +33,13 @@ public class VertexString implements VertexData {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hashCode(value);
     }
 
     @Override
-    public String toString()
-    {
-        if(value == null)
-        {
+    public String toString() {
+        if (value == null) {
             return "";
         }
 

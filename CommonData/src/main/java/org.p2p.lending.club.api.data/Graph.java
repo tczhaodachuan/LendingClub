@@ -21,9 +21,7 @@ public class Graph {
     public int addVertex(final Vertex v) {
         if (!vertexes.contains(v)) {
             vertexes.add(v);
-        }
-        else
-        {
+        } else {
             LOG.warn("Vertex {} has been added.", v.toString());
         }
 
@@ -34,9 +32,7 @@ public class Graph {
         Edge edge = new Edge(v, m);
         if (!edges.contains(edge)) {
             edges.add(edge);
-        }
-        else
-        {
+        } else {
             LOG.warn("Edge {} has been added.", edge.toString());
         }
     }
@@ -49,26 +45,20 @@ public class Graph {
         return edges;
     }
 
-    public int[][] getAdjMatrix()
-    {
+    public int[][] getAdjMatrix() {
         int[][] adjMatrix = new int[vertexes.size()][vertexes.size()];
         // initialization of the adjMatrix
-        for(int i = 0 ; i < vertexes.size() ; i++)
-        {
-            for(int j = 0 ; j < vertexes.size() ; j++)
-            {
+        for (int i = 0; i < vertexes.size(); i++) {
+            for (int j = 0; j < vertexes.size(); j++) {
                 adjMatrix[i][j] = 0;
             }
         }
 
-        for(int i = 0 ; i < vertexes.size() ; i++)
-        {
+        for (int i = 0; i < vertexes.size(); i++) {
             Vertex v = vertexes.elementAt(i);
-            for(int j = 0 ; j < edges.size() ; j++)
-            {
+            for (int j = 0; j < edges.size(); j++) {
                 Edge edge = edges.elementAt(j);
-                if(v.equals(edge.v) || v == edge.v)
-                {
+                if (v.equals(edge.v) || v == edge.v) {
                     adjMatrix[i][vertexes.indexOf(edge.m)] = 1;
                 }
             }
@@ -76,16 +66,13 @@ public class Graph {
         return adjMatrix;
     }
 
-    public void printAdjMatrix()
-    {
+    public void printAdjMatrix() {
         int[][] adjMatrix = getAdjMatrix();
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
-        for(int i = 0 ; i < adjMatrix.length ; i++)
-        {
+        for (int i = 0; i < adjMatrix.length; i++) {
             sb.append("[ ");
-            for(int j = 0 ; j < adjMatrix.length ; j++)
-            {
+            for (int j = 0; j < adjMatrix.length; j++) {
                 sb.append(adjMatrix[i][j]).append(" ");
             }
             sb.append("]\n");
