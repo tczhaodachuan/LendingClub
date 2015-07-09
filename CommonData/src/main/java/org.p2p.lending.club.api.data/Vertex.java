@@ -9,10 +9,23 @@ import org.apache.logging.log4j.Logger;
  */
 public class Vertex {
     private static final Logger LOG = LogManager.getLogger(Vertex.class);
-    private final VertexData vertexData;
+    protected final VertexData vertexData;
+    private boolean visit = false;
 
     public Vertex(VertexData vertexData) {
         this.vertexData = vertexData;
+    }
+
+    public void unvist() {
+        visit = false;
+    }
+
+    public void visited() {
+        visit = true;
+    }
+
+    public boolean isVisit() {
+        return visit;
     }
 
     @Override
@@ -34,10 +47,8 @@ public class Vertex {
     }
 
     @Override
-    public int hashCode()
-    {
-        if(vertexData == null)
-        {
+    public int hashCode() {
+        if (vertexData == null) {
             return 0;
         }
 
