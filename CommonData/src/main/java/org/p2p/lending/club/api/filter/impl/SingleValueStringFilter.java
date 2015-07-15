@@ -31,14 +31,14 @@ public class SingleValueStringFilter implements NoteFilter {
 
     @Override
     public boolean isFiltered(Note note) {
-        EnumNote enumNote = EnumNote.valueOf(value);
+        EnumNote enumNote = EnumNote.getEnumTagOf(name);
         String noteV = note.getString(enumNote);
         if (noteV == null) {
             return true;
         }
 
         if ("equals".equalsIgnoreCase(type)) {
-            if (ignoreCase) {
+            if (!ignoreCase) {
                 return noteV.equals(value) ? !not : not;
             } else {
                 return noteV.equalsIgnoreCase(value) ? !not : not;

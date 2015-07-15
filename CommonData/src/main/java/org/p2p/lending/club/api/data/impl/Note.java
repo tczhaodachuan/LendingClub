@@ -33,17 +33,17 @@ public class Note implements VertexData {
     }
 
     public int getInteger(EnumNote enumNote) {
-        Object val = fieldsMap.get(enumNote.name());
+        Object val = fieldsMap.get(enumNote.value());
         return val == null ? null : (int) val;
     }
 
     public double getDouble(EnumNote enumNote) {
-        Object val = fieldsMap.get(enumNote.name());
+        Object val = fieldsMap.get(enumNote.value());
         return val == null ? null : (double) val;
     }
 
     public String getString(EnumNote enumNote) {
-        Object val = fieldsMap.get(enumNote.name());
+        Object val = fieldsMap.get(enumNote.value());
         return val == null ? null : (String) val;
     }
 

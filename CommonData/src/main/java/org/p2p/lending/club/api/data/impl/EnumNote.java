@@ -42,4 +42,17 @@ public enum EnumNote {
     public String value() {
         return val;
     }
+
+    public static EnumNote getEnumTagOf(String val)
+    {
+        EnumNote[] enumNotes = values();
+        for(EnumNote enumNote : enumNotes)
+        {
+            if(enumNote.value().equals(val))
+            {
+                return enumNote;
+            }
+        }
+        return null;
+    }
 }
