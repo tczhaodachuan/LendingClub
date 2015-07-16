@@ -2,12 +2,12 @@ package org.p2p.lending.club.api.filter.impl;
 
 import org.p2p.lending.club.api.data.impl.EnumNote;
 import org.p2p.lending.club.api.data.impl.Note;
-import org.p2p.lending.club.api.filter.NoteFilter;
+import org.p2p.lending.club.api.filter.ValueFilter;
 
 /**
  * Created by tczhaodachuan on 7/14/2015.
  */
-public class SingleValueStringFilter implements NoteFilter {
+public class SingleValueStringFilter implements ValueFilter {
     private final String name;
     private final String value;
     // type could be equals, contains
@@ -30,11 +30,11 @@ public class SingleValueStringFilter implements NoteFilter {
     }
 
     @Override
-    public boolean isFiltered(Note note) {
+    public boolean isAllowed(Note note) {
         EnumNote enumNote = EnumNote.getEnumTagOf(name);
         String noteV = note.getString(enumNote);
         if (noteV == null) {
-            return true;
+            return false;
         }
 
         if ("equals".equalsIgnoreCase(type)) {
@@ -47,6 +47,6 @@ public class SingleValueStringFilter implements NoteFilter {
             return noteV.contains(value) ? !not : not;
         }
 
-        return true;
+        return false;
     }
 }

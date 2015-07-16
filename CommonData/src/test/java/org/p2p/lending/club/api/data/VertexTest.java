@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 public class VertexTest {
     private Vertex first;
     private Vertex second;
+
     @Before
     public void setUp() throws Exception {
         first = new Vertex(new VertexString("first"));

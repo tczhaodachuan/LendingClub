@@ -43,13 +43,10 @@ public enum EnumNote {
         return val;
     }
 
-    public static EnumNote getEnumTagOf(String val)
-    {
+    public static EnumNote getEnumTagOf(String val) {
         EnumNote[] enumNotes = values();
-        for(EnumNote enumNote : enumNotes)
-        {
-            if(enumNote.value().equals(val))
-            {
+        for (EnumNote enumNote : enumNotes) {
+            if (enumNote.value().equals(val)) {
                 return enumNote;
             }
         }

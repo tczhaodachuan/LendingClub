@@ -49,8 +49,7 @@ public class GraphTest {
     }
 
     @Test
-    public void testCycle()
-    {
+    public void testCycle() {
         assertTrue(cycleGraph.isCycleExisting());
         assertFalse(graph.isCycleExisting());
     }
@@ -83,8 +82,7 @@ public class GraphTest {
     }
 
     @Test
-    public void testFindVertex()
-    {
+    public void testFindVertex() {
         Vertex vC = graph.findVertex(new VertexString("C"));
         assertNotNull(vC);
 

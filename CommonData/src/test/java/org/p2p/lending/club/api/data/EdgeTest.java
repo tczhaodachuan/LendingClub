@@ -18,11 +18,11 @@ public class EdgeTest {
     private Edge second;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         first = new Edge(new Vertex(new VertexString("A")), new Vertex(new VertexString("B")));
         second = new Edge(new Vertex(new VertexString("B")), new Vertex(new VertexString("C")));
     }
+
     @Test
     public void testEquals() throws Exception {
         Edge anotherFirst = new Edge(new Vertex(new VertexString("A")), new Vertex(new VertexString("B")));
@@ -40,7 +40,7 @@ public class EdgeTest {
         assertTrue(set.contains(second));
         assertTrue(set.contains(anotherFirst));
 
-        Edge edge = new Edge(null,  new Vertex(new VertexString("B")));
+        Edge edge = new Edge(null, new Vertex(new VertexString("B")));
         assertTrue(edge.hashCode() == 0);
         edge = new Edge(new Vertex(new VertexString("B")), null);
         assertTrue(edge.hashCode() == 0);

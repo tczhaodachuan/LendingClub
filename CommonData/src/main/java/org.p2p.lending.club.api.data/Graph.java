@@ -1,6 +1,5 @@
 package org.p2p.lending.club.api.data;
 
-import com.sun.javafx.binding.StringFormatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,30 +45,23 @@ public class Graph {
         return edges;
     }
 
-    public boolean isCycleExisting()
-    {
+    public boolean isCycleExisting() {
         boolean result = dfs(vertexes.elementAt(0));
         unvisitVertexes();
         return result;
     }
 
-    private void unvisitVertexes()
-    {
+    private void unvisitVertexes() {
         vertexes.forEach(vertex -> vertex.unvist());
     }
 
-    private boolean dfs(Vertex v)
-    {
-        if(v.isVisit())
-        {
+    private boolean dfs(Vertex v) {
+        if (v.isVisit()) {
             return true;
-        }
-        else
-        {
+        } else {
             v.visited();
             Vector<Vertex> neighbors = getNeighbors(v);
-            for(Vertex neighbor : neighbors)
-            {
+            for (Vertex neighbor : neighbors) {
                 if (dfs(neighbor)) {
                     return true;
                 }
@@ -80,25 +72,18 @@ public class Graph {
         return false;
     }
 
-    public Vertex findVertex(VertexData vertexData)
-    {
+    public Vertex findVertex(VertexData vertexData) {
         return dfs(vertexData, vertexes.elementAt(0));
     }
 
-    private Vertex dfs(VertexData vertexData, Vertex v)
-    {
-        if(v.vertexData.equals(vertexData))
-        {
+    private Vertex dfs(VertexData vertexData, Vertex v) {
+        if (v.vertexData.equals(vertexData)) {
             return v;
-        }
-        else
-        {
+        } else {
             Vector<Vertex> neighbors = getNeighbors(v);
-            for(Vertex neighbor : neighbors)
-            {
+            for (Vertex neighbor : neighbors) {
                 Vertex result = dfs(vertexData, neighbor);
-                if( result != null)
-                {
+                if (result != null) {
                     return result;
                 }
             }
@@ -106,13 +91,10 @@ public class Graph {
         return null;
     }
 
-    public Vector<Vertex> getNeighbors(Vertex v)
-    {
+    public Vector<Vertex> getNeighbors(Vertex v) {
         Vector<Vertex> neighbors = new Vector<>();
-        for(Edge edge : edges)
-        {
-            if(edge.v.equals(v) || edge.v == v)
-            {
+        for (Edge edge : edges) {
+            if (edge.v.equals(v) || edge.v == v) {
                 neighbors.add(edge.m);
             }
         }
@@ -143,10 +125,8 @@ public class Graph {
     public void printAdjMatrix() {
         int[][] adjMatrix = getAdjMatrix();
         int max = vertexes.elementAt(0).vertexData.toString().length();
-        for(Vertex v : vertexes)
-        {
-            if(v.vertexData.toString().length() > max)
-            {
+        for (Vertex v : vertexes) {
+            if (v.vertexData.toString().length() > max) {
                 max = v.vertexData.toString().length();
             }
         }
@@ -154,7 +134,7 @@ public class Graph {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
         for (int i = 0; i < adjMatrix.length; i++) {
-            sb.append(String.format("%-" + max + "s [ ",vertexes.elementAt(i).vertexData));
+            sb.append(String.format("%-" + max + "s [ ", vertexes.elementAt(i).vertexData));
             for (int j = 0; j < adjMatrix.length; j++) {
                 sb.append(adjMatrix[i][j]).append(" ");
             }
