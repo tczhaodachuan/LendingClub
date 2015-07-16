@@ -39,4 +39,5 @@ subprojects {
 }
 dependencies{
     compile "org.codehaus.groovy:groovy-all:2.3.11"
+    compile "org.springframework:spring-core:4.1.7.RELEASE"
 }
