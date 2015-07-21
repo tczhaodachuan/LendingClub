@@ -2,6 +2,7 @@ package org.p2p.lending.club.api.data.impl;
 
 import org.p2p.lending.club.api.data.VertexData;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +18,10 @@ public class Note implements VertexData {
     public Note(String noteId, String loanId, Map<String, Object> fieldsMap) {
         this.noteId = noteId;
         this.loanId = loanId;
-        this.fieldsMap = fieldsMap;
+        this.fieldsMap = new HashMap<>(fieldsMap);
+        // has to register noteId and loanId
+        this.fieldsMap.put(EnumNote.NOTE_ID.value(), noteId);
+        this.fieldsMap.put(EnumNote.LOAN_ID.value(), loanId);
     }
 
     public String getNoteId() {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    <bean id="gradeFilter" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
+        <constructor-arg index="0" value="grade"/>
+        <constructor-arg index="1" value="b"/>
+        <constructor-arg index="2" value="equals"/>
+    </bean>
+    <bean id="loanFilter" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
+        <constructor-arg index="0" value="noteId"/>
+        <constructor-arg index="1" value="1"/>
+        <constructor-arg index="2" value="equals"/>
+    </bean>
+    <bean id="logicFilter" class="org.p2p.lending.club.api.filter.impl.LogicalValueFilter">
+        <constructor-arg index="0" value="and"/>
+        <constructor-arg index="1" ref="filters"/>
+    </bean>
+
+    <util:list id="filters" value-type="org.p2p.lending.club.api.filter.ValueFilter">
+        <ref bean="gradeFilter"/>
+        <ref bean="loanFilter"/>
+    </util:list>
+
+    <bean id="consumerLifeCycle" class="org.p2p.lending.club.main.ConsumerLifeCycle">
+        <constructor-arg ref="logicFilter"/>
+    </bean>
+</beans>
