@@ -59,4 +59,9 @@ public class Transaction {
             orders.remove(index);
         }
     }
+
+    public int getNumberOfOrders()
+    {
+        return orders.size();
+    }
 }

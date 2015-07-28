@@ -8,11 +8,13 @@ import org.p2p.lending.club.api.data.impl.Note;
 public class Order {
     private final Note note;
     private final String requestedAccount;
+    private final long createTime;
     private String portfolioId;
 
     public Order(Note note, String requestedAccount) {
         this.note = note;
         this.requestedAccount = requestedAccount;
+        this.createTime = System.currentTimeMillis();
     }
 
     public Note getNote() {

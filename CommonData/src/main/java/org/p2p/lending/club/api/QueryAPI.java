@@ -12,6 +12,6 @@ public interface QueryAPI {
     List<Note> getOwnedNotes();
     List<Note> getListedNotes();
     double getAvailableCash();
-    boolean submitOrder(Transaction transaction);
+    boolean submitTransaction(Transaction transaction);
     boolean createPortfolio(String investorId, String portfolioName, String portfolioDescription);
 }
