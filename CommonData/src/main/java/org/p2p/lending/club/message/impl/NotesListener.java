@@ -1,14 +1,14 @@
 package org.p2p.lending.club.message.impl;
 
 import org.p2p.lending.club.api.data.impl.Note;
-import org.p2p.lending.club.message.QueueConsumer;
+import org.p2p.lending.club.message.Consumer;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by tczhaodachuan on 7/21/2015.
  */
-public class NotesListener implements QueueConsumer.Listener<Note> {
+public class NotesListener implements Consumer.Listener<Note> {
     private final int capacity;
     private ArrayBlockingQueue<Note> blockingQueue;
 

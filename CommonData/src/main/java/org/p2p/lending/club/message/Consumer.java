@@ -6,7 +6,7 @@ import org.springframework.context.Lifecycle;
 /**
  * Created by tczhaodachuan on 7/21/2015.
  */
-public interface QueueConsumer extends Lifecycle{
+public interface Consumer extends Lifecycle{
     void start(Listener listener);
 
     public interface Listener<T>
