@@ -22,34 +22,46 @@ public class SingleValueIntegerFilterTest {
         Note note = new Note("11", "22", map);
         assertFalse(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 1000);
+        note = new Note("11", "22", map);
         assertTrue(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 4000);
+        note = new Note("11", "22", map);
         assertTrue(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 400);
+        note = new Note("11", "22", map);
         assertFalse(singleValueIntegerFilter.isAllowed(note));
 
         singleValueIntegerFilter = new SingleValueIntegerFilter("loanAmount", 1000, "gt");
         map.put(EnumNote.LOAN_AMOUNT.value(), 1000);
+        note = new Note("11", "22", map);
         assertFalse(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 400);
+        note = new Note("11", "22", map);
         assertFalse(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 4000);
+        note = new Note("11", "22", map);
         assertTrue(singleValueIntegerFilter.isAllowed(note));
 
         singleValueIntegerFilter = new SingleValueIntegerFilter("loanAmount", 1000, "lt");
         map.put(EnumNote.LOAN_AMOUNT.value(), 1000);
+        note = new Note("11", "22", map);
         assertFalse(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 400);
+        note = new Note("11", "22", map);
         assertTrue(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 4000);
+        note = new Note("11", "22", map);
         assertFalse(singleValueIntegerFilter.isAllowed(note));
 
         singleValueIntegerFilter = new SingleValueIntegerFilter("loanAmount", 1000, "lte");
         map.put(EnumNote.LOAN_AMOUNT.value(), 1000);
+        note = new Note("11", "22", map);
         assertTrue(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 400);
+        note = new Note("11", "22", map);
         assertTrue(singleValueIntegerFilter.isAllowed(note));
         map.put(EnumNote.LOAN_AMOUNT.value(), 4000);
+        note = new Note("11", "22", map);
         assertFalse(singleValueIntegerFilter.isAllowed(note));
     }
 }

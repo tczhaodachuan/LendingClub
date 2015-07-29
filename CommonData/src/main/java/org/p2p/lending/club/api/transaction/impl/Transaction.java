@@ -1,4 +1,4 @@
-package org.p2p.lending.club.api.transaction;
+package org.p2p.lending.club.api.transaction.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

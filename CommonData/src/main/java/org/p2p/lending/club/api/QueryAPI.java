@@ -1,7 +1,7 @@
 package org.p2p.lending.club.api;
 
 import org.p2p.lending.club.api.data.impl.Note;
-import org.p2p.lending.club.api.transaction.Transaction;
+import org.p2p.lending.club.api.transaction.impl.Transaction;
 
 import java.util.List;
 
