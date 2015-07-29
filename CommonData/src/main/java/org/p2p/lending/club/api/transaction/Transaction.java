@@ -60,6 +60,10 @@ public class Transaction {
         }
     }
 
+    public int getTrasactionId() {
+        return trasactionId.get();
+    }
+
     public int getNumberOfOrders()
     {
         return orders.size();

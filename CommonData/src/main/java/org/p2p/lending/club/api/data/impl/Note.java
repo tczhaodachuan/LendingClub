@@ -38,12 +38,12 @@ public class Note implements VertexData {
 
     public Integer getInteger(EnumNote enumNote) {
         Object val = fieldsMap.get(enumNote.value());
-        return val == null ? null : (int) val;
+        return val == null ? null : (Integer) val;
     }
 
     public Double getDouble(EnumNote enumNote) {
         Object val = fieldsMap.get(enumNote.value());
-        return val == null ? null : (double) val;
+        return val == null ? null : (Double) val;
     }
 
     public String getString(EnumNote enumNote) {

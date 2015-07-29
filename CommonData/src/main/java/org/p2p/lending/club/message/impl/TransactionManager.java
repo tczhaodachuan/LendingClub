@@ -6,6 +6,7 @@ import org.p2p.lending.club.api.QueryAPI;
 import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.filter.ValueFilter;
 import org.p2p.lending.club.api.order.Order;
+import org.p2p.lending.club.api.transaction.LogTransactionAuditor;
 import org.p2p.lending.club.api.transaction.Transaction;
 import org.p2p.lending.club.api.transaction.TransactionAuditor;
 import org.p2p.lending.club.message.Consumer;
@@ -35,6 +36,7 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
         this.accountId = accountId;
         blockingQueue = new LinkedBlockingQueue<Note>();
         exceptionHandler = new LogExceptionHandler();
+        transactionAuditor = new LogTransactionAuditor();
     }
 
     public void init() {
@@ -120,6 +122,10 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
 
     public void setTransactionBatchDelayTime(long transactionBatchDelayTime) {
         this.transactionBatchDelayTime = transactionBatchDelayTime;
+    }
+
+    public void setTransactionAuditor(TransactionAuditor transactionAuditor) {
+        this.transactionAuditor = transactionAuditor;
     }
 
     class LogExceptionHandler implements ExceptionHandler {
