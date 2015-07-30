@@ -9,7 +9,7 @@ import org.p2p.lending.club.util.JsonSerializer;
  * Created by tczhaodachuan on 7/28/2015.
  */
 public class LogTransactionAuditor implements TransactionAuditor {
-    private static final Logger LOG = LogManager.getLogger();
+    private static Logger LOG = LogManager.getLogger();
 
     @Override
     public void audit(Transaction transaction, String message) {
@@ -18,5 +18,9 @@ public class LogTransactionAuditor implements TransactionAuditor {
         {
             LOG.debug("Details {} " , JsonSerializer.toGeneralJson(transaction));
         }
+    }
+
+    protected static void setLOG(Logger LOG) {
+        LogTransactionAuditor.LOG = LOG;
     }
 }
