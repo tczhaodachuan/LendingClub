@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static junit.framework.TestCase.assertNotNull;
-
 /**
  * Created by tczhaodachuan on 7/23/2015.
  */
@@ -30,7 +28,7 @@ public class Transaction {
     }
 
     public void addOrder(Order order) {
-        assertNotNull(order);
+        //assertNotNull(order);
 
         if (orderNames.contains(order.getNote().getNoteId())) {
             LOG.warn("NoteId {} has already been created " + order.getNote().getNoteId());
@@ -43,7 +41,7 @@ public class Transaction {
     }
 
     public void removeOrder(Order order) {
-        assertNotNull(order);
+        //assertNotNull(order);
 
         orderNames.remove(order.getNote().getNoteId());
         int index = -1;
