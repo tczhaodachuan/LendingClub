@@ -3,8 +3,6 @@ package org.p2p.lending.club.api.impl;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by tczhaodachuan on 8/10/2015.
  */

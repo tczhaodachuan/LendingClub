@@ -14,7 +14,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.QueryAPI;
-import org.p2p.lending.club.api.data.impl.NoteOwned;
+import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
 
 import java.io.IOException;
@@ -57,12 +57,12 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
-    public List<NoteOwned> getOwnedNotes() {
+    public List<Note> getOwnedNotes() {
         return null;
     }
 
     @Override
-    public List<NoteOwned> getListedNotes() {
+    public List<Note> getListedNotes() {
         try {
             URI uri = new URIBuilder()
                     .setScheme(SCHEME)
@@ -86,7 +86,7 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
-    public List<NoteOwned> getAllListedNotes() {
+    public List<Note> getAllListedNotes() {
         return null;
     }
 

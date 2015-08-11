@@ -1,5 +1,8 @@
 package org.p2p.lending.club.api.data.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by tczhaodachuan on 7/13/2015.
  * Documents could be found
@@ -19,6 +22,7 @@ package org.p2p.lending.club.api.data.impl;
  * "loanStatusDate":"2013-05-20T13:13:53.000-07:00"
  */
 public enum EnumNote {
+    // below are for owned notes enums
     LOAN_ID("loanId"),
     NOTE_ID("noteId"),
     ORDER_ID("orderId"),
@@ -26,12 +30,31 @@ public enum EnumNote {
     LOAN_LENGTH("loanLength"),
     LOAN_STATUS("loanStatus"),
     GRADE("grade"),
-    LOAN_AMOUNT("loanAmount"),
     NOTE_AMOUNT("noteAmount"),
     PAYMENTS_RCVD("paymentsReceived"),
     ISSUE_DATE("issueDate"),
     ORDER_DATE("orderDate"),
-    STATUS_DATE("loanStatusDate");
+    STATUS_DATE("loanStatusDate"),
+    // common used name tag
+    LOAN_AMOUNT("loanAmount"),
+    // below are for listed notes enums for addressing purpose
+    // it may increase in the future
+    ID("id"),
+    MEMBER_ID("memberId"),
+    TERM("term"),
+    INT_RATE("intRate"),
+    EXP_DEFAULT_RATE("expDefaultRate"),
+    HOME_OWNERSHIP("homeOwnership"),
+    REVIEW_STATUS("reviewStatus"),
+    PURPOSE("purpose"),
+    ADDR_ZIP("addrZip"),
+    ADDR_STATE("addrState"),
+    INVESTOR_COUNT("investorCount"),
+    DTI("dti"),
+    DELINQ_2YRS("delinq2Yrs"),
+    FICORANGE_LOW("ficoRangeLow"),
+    FICORANGE_HIGH("ficoRangeHigh"),
+    FUNDED_AMOUNT("fundedAmount");
 
     private final String val;
 

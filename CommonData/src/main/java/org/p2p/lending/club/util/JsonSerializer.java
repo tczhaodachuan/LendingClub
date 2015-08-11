@@ -1,9 +1,8 @@
 package org.p2p.lending.club.util;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.p2p.lending.club.api.data.impl.NoteListed;
+import org.p2p.lending.club.api.data.impl.ListedNotes;
 
 /**
  * Created by tczhaodachuan on 7/28/2015.
@@ -16,7 +15,7 @@ public class JsonSerializer {
                 .disableHtmlEscaping()
                 .setPrettyPrinting()
                 .serializeNulls()
-                .registerTypeAdapter(NoteListed.class, new NoteListedDeserializer())
+                .registerTypeAdapter(ListedNotes.class, new ListedNotesDeserializer())
                 .create();
 
     }

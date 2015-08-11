@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.p2p.lending.club.api.QueryAPI;
 import org.p2p.lending.club.api.filter.ValueFilter;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 /**

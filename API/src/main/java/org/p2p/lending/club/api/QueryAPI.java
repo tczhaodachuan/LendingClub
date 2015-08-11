@@ -1,6 +1,6 @@
 package org.p2p.lending.club.api;
 
-import org.p2p.lending.club.api.data.impl.NoteOwned;
+import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
 
 import java.util.List;
@@ -9,19 +9,19 @@ import java.util.List;
  * Created by tczhaodachuan on 7/23/2015.
  */
 public interface QueryAPI {
-    static String SCHEME = "https";
-    static String HOST = "api.lendingclub.com";
-    static String LISTING_NOTES_PATH = "/api/investor/v1/loans/listing";
-    static String SHOW_ALL = "showAll";
-    static String AUTHENTICATION = "Authorization";
-    static String CONTENT_TYPE = "Content-type";
-    static String ACCEPT = "Accept";
+    String SCHEME = "https";
+    String HOST = "api.lendingclub.com";
+    String LISTING_NOTES_PATH = "/api/investor/v1/loans/listing";
+    String SHOW_ALL = "showAll";
+    String AUTHENTICATION = "Authorization";
+    String CONTENT_TYPE = "Content-type";
+    String ACCEPT = "Accept";
 
-    List<NoteOwned> getOwnedNotes();
+    List<Note> getOwnedNotes();
 
-    List<NoteOwned> getListedNotes();
+    List<Note> getListedNotes();
 
-    List<NoteOwned> getAllListedNotes();
+    List<Note> getAllListedNotes();
 
     double getAvailableCash();
 

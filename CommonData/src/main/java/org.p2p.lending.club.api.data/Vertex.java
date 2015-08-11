@@ -42,7 +42,7 @@ public class Vertex {
 
         Vertex vertex = (Vertex) object;
         if (vertexData == null) {
-            return vertex.vertexData == null ? true : false;
+            return vertex.vertexData == null;
         }
 
         return vertexData.equals(vertex.vertexData);

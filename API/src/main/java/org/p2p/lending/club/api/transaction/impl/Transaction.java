@@ -30,24 +30,24 @@ public class Transaction {
     public void addOrder(Order order) {
         //assertNotNull(order);
 
-        if (orderNames.contains(order.getNoteOwned().getNoteId())) {
-            LOG.warn("NoteId {} has already been created " + order.getNoteOwned().getNoteId());
+        if (orderNames.contains(order.getNote().getNoteId())) {
+            LOG.warn("NoteId {} has already been created " + order.getNote().getNoteId());
             return;
         }
 
-        orderNames.add(order.getNoteOwned().getNoteId());
+        orderNames.add(order.getNote().getNoteId());
         orders.add(order);
-        LOG.info("NoteId {} has been added into transaction {} ", order.getNoteOwned().getNoteId(), trasactionId.get());
+        LOG.info("NoteId {} has been added into transaction {} ", order.getNote().getNoteId(), trasactionId.get());
     }
 
     public void removeOrder(Order order) {
         //assertNotNull(order);
 
-        orderNames.remove(order.getNoteOwned().getNoteId());
+        orderNames.remove(order.getNote().getNoteId());
         int index = -1;
         for (int i = 0; i < orders.size(); i++) {
             Order o = orders.get(i);
-            if (o.getNoteOwned().getNoteId().equals(order.getNoteOwned().getNoteId())) {
+            if (o.getNote().getNoteId().equals(order.getNote().getNoteId())) {
                 index = i;
                 break;
             }
@@ -65,5 +65,9 @@ public class Transaction {
     public int getNumberOfOrders()
     {
         return orders.size();
+    }
+
+    public String getAccountId() {
+        return accountId;
     }
 }
