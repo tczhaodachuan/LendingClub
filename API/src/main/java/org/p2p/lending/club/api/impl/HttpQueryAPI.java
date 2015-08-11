@@ -153,8 +153,6 @@ public class HttpQueryAPI implements QueryAPI {
 
             if (count >= maxCount) {
                 throw new ClientProtocolException("Response contains too much data");
-            } else {
-                sb.append(charArray);
             }
 
             return sb.toString();

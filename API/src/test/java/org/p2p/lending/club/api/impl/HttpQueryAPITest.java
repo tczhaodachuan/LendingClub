@@ -12,6 +12,7 @@ public class HttpQueryAPITest {
     private HttpQueryAPI httpQueryAPI;
     @Before
     public void setUp() throws Exception {
+        httpQueryAPI = new HttpQueryAPI(10, "M3Pf8h9Dsl+37QwDsNEUYn63aj8=");
     }
 
     @Test
@@ -21,8 +22,7 @@ public class HttpQueryAPITest {
 
     @Test
     public void testGetListedNotes() throws Exception {
-        //httpQueryAPI.getListedNotes();
-
+        httpQueryAPI.getListedNotes();
     }
 
     @Test
