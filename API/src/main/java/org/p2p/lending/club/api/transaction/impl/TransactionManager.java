@@ -3,7 +3,7 @@ package org.p2p.lending.club.api.transaction.impl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.QueryAPI;
-import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.NoteOwned;
 import org.p2p.lending.club.api.filter.ValueFilter;
 import org.p2p.lending.club.api.order.Order;
 import org.p2p.lending.club.api.transaction.ExceptionHandler;
@@ -16,14 +16,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by tczhaodachuan on 7/21/2015.
  */
-public class TransactionManager implements Consumer.Listener<Note>, Runnable {
+public class TransactionManager implements Consumer.Listener<NoteOwned>, Runnable {
     private static final Logger LOG = LogManager.getLogger();
     private final String accountId;
     private final ValueFilter valueFilter;
     private final QueryAPI queryAPI;
     private ExceptionHandler exceptionHandler;
     private TransactionAuditor transactionAuditor;
-    private LinkedBlockingQueue<Note> blockingQueue;
+    private LinkedBlockingQueue<NoteOwned> blockingQueue;
     private AtomicBoolean isRunning = new AtomicBoolean(false);
     private int requestedAmount;
     private int transactionBatchAmount;
@@ -33,7 +33,7 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
         this.valueFilter = valueFilter;
         this.queryAPI = queryAPI;
         this.accountId = accountId;
-        blockingQueue = new LinkedBlockingQueue<Note>();
+        blockingQueue = new LinkedBlockingQueue<NoteOwned>();
         exceptionHandler = new LogExceptionHandler();
         transactionAuditor = new LogTransactionAuditor();
     }
@@ -57,8 +57,8 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
     }
 
     @Override
-    public void onMessage(Note note) {
-        blockingQueue.offer(note);
+    public void onMessage(NoteOwned noteOwned) {
+        blockingQueue.offer(noteOwned);
     }
 
     @Override
@@ -74,10 +74,10 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
         Transaction transaction = new Transaction(accountId);
         transactionAuditor.audit(transaction, "Created empty transaction");
         while (isRunning()) {
-            Note note = blockingQueue.poll();
-            if (valueFilter.isAllowed(note)) {
+            NoteOwned noteOwned = blockingQueue.poll();
+            if (valueFilter.isAllowed(noteOwned)) {
                 LOG.info("Starting to make an order");
-                Order order = new Order(note, String.valueOf(requestedAmount));
+                Order order = new Order(noteOwned, String.valueOf(requestedAmount));
                 transaction.addOrder(order);
                 transactionAuditor.audit(transaction, "an Order added into transaction");
                 if (transaction.getNumberOfOrders() % transactionBatchAmount == 0) {

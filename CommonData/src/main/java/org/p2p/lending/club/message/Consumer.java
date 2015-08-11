@@ -1,6 +1,5 @@
 package org.p2p.lending.club.message;
 
-import org.p2p.lending.club.api.data.impl.Note;
 import org.springframework.context.Lifecycle;
 
 /**

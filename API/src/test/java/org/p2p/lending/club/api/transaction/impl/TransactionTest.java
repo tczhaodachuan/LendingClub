@@ -1,7 +1,7 @@
 package org.p2p.lending.club.api.transaction.impl;
 
 import org.junit.Test;
-import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.NoteOwned;
 import org.p2p.lending.club.api.order.Order;
 import org.p2p.lending.club.util.TestObjectsFactory;
 
@@ -15,13 +15,13 @@ public class TransactionTest {
     public void testAddOrder() throws Exception {
         Transaction transaction = new Transaction("12345");
         assertTrue(transaction.getNumberOfOrders() == 0);
-        Note note = TestObjectsFactory.createNote();
-        Order order = new Order(note, "25");
+        NoteOwned noteOwned = TestObjectsFactory.createNote();
+        Order order = new Order(noteOwned, "25");
         transaction.addOrder(order);
         assertTrue(transaction.getNumberOfOrders() == 1);
 
-        note = TestObjectsFactory.createNote();
-        order = new Order(note, "25");
+        noteOwned = TestObjectsFactory.createNote();
+        order = new Order(noteOwned, "25");
         transaction.addOrder(order);
         assertTrue(transaction.getNumberOfOrders() == 2);
 

@@ -3,7 +3,7 @@ package org.p2p.lending.club.api.filter.impl;
 import org.junit.Before;
 import org.junit.Test;
 import org.p2p.lending.club.api.data.impl.EnumNote;
-import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.NoteOwned;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +28,12 @@ public class SingleValueStringFilterTest {
         singleValueStringFilter.setIgnoreCase(false);
         Map<String, Object> map = new HashMap<>();
         map.put(EnumNote.GRADE.value(), "E");
-        Note note = new Note("11", "22", map);
-        assertFalse(singleValueStringFilter.isAllowed(note));
+        NoteOwned noteOwned = new NoteOwned("11", "22", map);
+        assertFalse(singleValueStringFilter.isAllowed(noteOwned));
         map = new HashMap<>();
         map.put(EnumNote.GRADE.value(), "e");
-        note = new Note("11", "22", map);
-        assertTrue(singleValueStringFilter.isAllowed(note));
+        noteOwned = new NoteOwned("11", "22", map);
+        assertTrue(singleValueStringFilter.isAllowed(noteOwned));
 
     }
 
@@ -43,41 +43,41 @@ public class SingleValueStringFilterTest {
         singleValueStringFilter.setNot(true);
         Map<String, Object> map = new HashMap<>();
         map.put(EnumNote.GRADE.value(), "e");
-        Note note = new Note("11", "22", map);
+        NoteOwned noteOwned = new NoteOwned("11", "22", map);
         // should be filtered but not
-        assertFalse(singleValueStringFilter.isAllowed(note));
+        assertFalse(singleValueStringFilter.isAllowed(noteOwned));
 
         map = new HashMap<>();
         map.put(EnumNote.GRADE.value(), "A");
-        note = new Note("11", "22", map);
+        noteOwned = new NoteOwned("11", "22", map);
         // should not be filtered but yes
-        assertTrue(singleValueStringFilter.isAllowed(note));
+        assertTrue(singleValueStringFilter.isAllowed(noteOwned));
     }
 
     @Test
     public void testIsAllowed() throws Exception {
         Map<String, Object> map = new HashMap<>();
         map.put(EnumNote.GRADE.value(), "A");
-        Note note = new Note("11", "22", map);
+        NoteOwned noteOwned = new NoteOwned("11", "22", map);
 
-        assertFalse(singleValueStringFilter.isAllowed(note));
+        assertFalse(singleValueStringFilter.isAllowed(noteOwned));
 
         singleValueStringFilter = new SingleValueStringFilter("issueDate", "07-15-2015", "equals");
         map = new HashMap<>();
         map.put(EnumNote.ISSUE_DATE.value(), "07-15-2015");
-        note = new Note("11", "22", map);
+        noteOwned = new NoteOwned("11", "22", map);
 
-        assertTrue(singleValueStringFilter.isAllowed(note));
+        assertTrue(singleValueStringFilter.isAllowed(noteOwned));
 
         singleValueStringFilter = new SingleValueStringFilter("issueDate", "07-15-2015", "contains");
         map = new HashMap<>();
         map.put(EnumNote.ISSUE_DATE.value(), "07-15-2015 00:00:00");
-        note = new Note("11", "22", map);
-        assertTrue(singleValueStringFilter.isAllowed(note));
+        noteOwned = new NoteOwned("11", "22", map);
+        assertTrue(singleValueStringFilter.isAllowed(noteOwned));
 
         map = new HashMap<>();
         map.put(EnumNote.ISSUE_DATE.value(), "07-15-2016 00:00:00");
-        note = new Note("11", "22", map);
-        assertFalse(singleValueStringFilter.isAllowed(note));
+        noteOwned = new NoteOwned("11", "22", map);
+        assertFalse(singleValueStringFilter.isAllowed(noteOwned));
     }
 }

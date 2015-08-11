@@ -10,12 +10,12 @@ import java.util.Map;
  * Documents could be found
  * https://www.lendingclub.com/developers/notes-owned.action
  */
-public class Note implements VertexData {
+public class NoteOwned implements VertexData {
     private final String noteId;
     private final String loanId;
     private final Map<String, Object> fieldsMap;
 
-    public Note(String noteId, String loanId, Map<String, Object> fieldsMap) {
+    public NoteOwned(String noteId, String loanId, Map<String, Object> fieldsMap) {
         this.noteId = noteId;
         this.loanId = loanId;
         this.fieldsMap = new HashMap<>(fieldsMap);
@@ -60,7 +60,7 @@ public class Note implements VertexData {
             return false;
         }
 
-        Note note = (Note) vertexData;
-        return noteId != null && loanId.equals(note.getNoteId());
+        NoteOwned noteOwned = (NoteOwned) vertexData;
+        return noteId != null && loanId.equals(noteOwned.getNoteId());
     }
 }

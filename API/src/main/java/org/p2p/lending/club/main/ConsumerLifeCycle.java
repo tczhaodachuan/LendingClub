@@ -3,7 +3,7 @@ package org.p2p.lending.club.main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.data.impl.EnumNote;
-import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.NoteOwned;
 import org.p2p.lending.club.api.filter.ValueFilter;
 import org.springframework.context.Lifecycle;
 
@@ -29,20 +29,20 @@ public class ConsumerLifeCycle implements Lifecycle {
         isRunning = true;
         Map<String, Object> map = new HashMap<>();
         map.put(EnumNote.GRADE.value(), "B");
-        Note note1 = new Note("1", "11", map);
+        NoteOwned note1 = new NoteOwned("1", "11", map);
         map.put(EnumNote.GRADE.value(), "C");
-        Note note2 = new Note("2", "22", map);
+        NoteOwned note2 = new NoteOwned("2", "22", map);
         map.put(EnumNote.GRADE.value(), "A");
-        Note note3 = new Note("3", "33", map);
-        List<Note> noteList = new ArrayList<>();
-        noteList.add(note1);
-        noteList.add(note2);
-        noteList.add(note3);
-        for (Note note : noteList) {
-            if (valueFilter.isAllowed(note)) {
-                LOG.info("Note is allowed noteId {}, loanId {}", note.getNoteId(), note.getLoanId());
+        NoteOwned note3 = new NoteOwned("3", "33", map);
+        List<NoteOwned> noteOwnedList = new ArrayList<>();
+        noteOwnedList.add(note1);
+        noteOwnedList.add(note2);
+        noteOwnedList.add(note3);
+        for (NoteOwned noteOwned : noteOwnedList) {
+            if (valueFilter.isAllowed(noteOwned)) {
+                LOG.info("NoteOwned is allowed noteId {}, loanId {}", noteOwned.getNoteId(), noteOwned.getLoanId());
             } else {
-                LOG.info("Note is not allowed noteId {}, loanId {}", note.getNoteId(), note.getLoanId());
+                LOG.info("NoteOwned is not allowed noteId {}, loanId {}", noteOwned.getNoteId(), noteOwned.getLoanId());
             }
         }
     }

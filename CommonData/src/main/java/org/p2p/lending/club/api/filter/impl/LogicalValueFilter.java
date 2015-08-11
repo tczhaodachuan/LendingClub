@@ -1,6 +1,6 @@
 package org.p2p.lending.club.api.filter.impl;
 
-import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.NoteOwned;
 import org.p2p.lending.club.api.filter.ValueFilter;
 
 import java.util.List;
@@ -23,17 +23,17 @@ public class LogicalValueFilter implements ValueFilter {
     }
 
     @Override
-    public boolean isAllowed(Note note) {
+    public boolean isAllowed(NoteOwned noteOwned) {
         if ("and".equals(logic)) {
             for (ValueFilter filter : filters) {
-                if (!filter.isAllowed(note)) {
+                if (!filter.isAllowed(noteOwned)) {
                     return not;
                 }
             }
             return !not;
         } else if ("or".equals(logic)) {
             for (ValueFilter filter : filters) {
-                if (filter.isAllowed(note)) {
+                if (filter.isAllowed(noteOwned)) {
                     return !not;
                 }
             }

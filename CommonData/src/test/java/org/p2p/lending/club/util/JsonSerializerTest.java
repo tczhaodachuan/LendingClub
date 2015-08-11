@@ -2,7 +2,7 @@ package org.p2p.lending.club.util;
 
 import org.junit.Test;
 import org.p2p.lending.club.api.data.impl.EnumNote;
-import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.NoteOwned;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,15 +25,15 @@ public class JsonSerializerTest {
         assertTrue(json.contains("citizenship"));
 
         Map<String, Object> map = new HashMap<>();
-        Note note = new Note("1", "2", map);
-        json = JsonSerializer.toGeneralJson(note);
+        NoteOwned noteOwned = new NoteOwned("1", "2", map);
+        json = JsonSerializer.toGeneralJson(noteOwned);
         assertTrue(json.contains("noteId"));
         assertTrue(json.contains("loanId"));
 
         map.put(EnumNote.GRADE.value(), "A");
         map.put(EnumNote.LOAN_AMOUNT.value(), 30000);
-        note = new Note("1", "2", map);
-        json = JsonSerializer.toGeneralJson(note);
+        noteOwned = new NoteOwned("1", "2", map);
+        json = JsonSerializer.toGeneralJson(noteOwned);
         assertTrue(json.contains("loanAmount"));
         assertTrue(json.contains("30000"));
         assertTrue(json.contains("grade"));
@@ -45,11 +45,11 @@ public class JsonSerializerTest {
         Map<String, Object> map = new HashMap<>();
         map.put(EnumNote.GRADE.value(), "A");
         map.put(EnumNote.LOAN_AMOUNT.value(), 30000);
-        Note note = new Note("1", "2", map);
-        String json = JsonSerializer.toGeneralJson(note);
+        NoteOwned noteOwned = new NoteOwned("1", "2", map);
+        String json = JsonSerializer.toGeneralJson(noteOwned);
         System.out.println("json = " + json);
 
-        Note fromJson = JsonSerializer.fromJson(json, Note.class);
+        NoteOwned fromJson = JsonSerializer.fromJson(json, NoteOwned.class);
         assertEquals("1", fromJson.getNoteId());
         assertEquals("2", fromJson.getLoanId());
         assertEquals("A", fromJson.getString(EnumNote.GRADE));

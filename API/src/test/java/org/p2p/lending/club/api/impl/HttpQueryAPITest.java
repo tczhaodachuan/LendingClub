@@ -9,10 +9,9 @@ import static org.junit.Assert.*;
  * Created by tczhaodachuan on 8/10/2015.
  */
 public class HttpQueryAPITest {
-
+    private HttpQueryAPI httpQueryAPI;
     @Before
     public void setUp() throws Exception {
-
     }
 
     @Test
@@ -22,6 +21,7 @@ public class HttpQueryAPITest {
 
     @Test
     public void testGetListedNotes() throws Exception {
+        //httpQueryAPI.getListedNotes();
 
     }
 

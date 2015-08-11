@@ -1,7 +1,7 @@
 package org.p2p.lending.club.api.filter.impl;
 
 import org.p2p.lending.club.api.data.impl.EnumNote;
-import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.NoteOwned;
 import org.p2p.lending.club.api.filter.ValueFilter;
 
 /**
@@ -20,9 +20,9 @@ public class SingleValueIntegerFilter implements ValueFilter {
     }
 
     @Override
-    public boolean isAllowed(Note note) {
+    public boolean isAllowed(NoteOwned noteOwned) {
         EnumNote enumNote = EnumNote.getEnumTagOf(name);
-        Integer noteI = note.getInteger(enumNote);
+        Integer noteI = noteOwned.getInteger(enumNote);
         if (noteI == null) {
             return false;
         }
