@@ -24,14 +24,14 @@ public class Transaction {
         this.accountId = accountId;
         orderNames = new HashSet<>();
         orders = new ArrayList<>();
-        LOG.info("Transaction {} has been created " + trasactionId.incrementAndGet());
+        LOG.info("Transaction {} has been created ", trasactionId.incrementAndGet());
     }
 
     public void addOrder(Order order) {
         //assertNotNull(order);
 
         if (orderNames.contains(order.getNote().getNoteId())) {
-            LOG.warn("NoteId {} has already been created " + order.getNote().getNoteId());
+            LOG.warn("NoteId {} has already been created ", order.getNote().getNoteId());
             return;
         }
 
@@ -62,8 +62,7 @@ public class Transaction {
         return trasactionId.get();
     }
 
-    public int getNumberOfOrders()
-    {
+    public int getNumberOfOrders() {
         return orders.size();
     }
 

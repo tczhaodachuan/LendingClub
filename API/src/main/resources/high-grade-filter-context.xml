@@ -23,8 +23,4 @@
         <ref bean="gradeFilter"/>
         <ref bean="loanFilter"/>
     </util:list>
-
-    <bean id="consumerLifeCycle" class="org.p2p.lending.club.main.ConsumerLifeCycle">
-        <constructor-arg ref="logicFilter"/>
-    </bean>
 </beans>

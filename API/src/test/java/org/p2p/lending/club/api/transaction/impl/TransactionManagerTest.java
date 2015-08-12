@@ -19,7 +19,7 @@ public class TransactionManagerTest {
     public void setUp() throws Exception {
         valueFilter = mock(ValueFilter.class);
         queryAPI = mock(QueryAPI.class);
-        transactionManager = new TransactionManager("1", valueFilter, queryAPI);
+        transactionManager = new TransactionManager(valueFilter, queryAPI);
     }
 
     @Test

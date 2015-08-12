@@ -1,5 +1,8 @@
 package org.p2p.lending.club.api.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -14,6 +17,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.QueryAPI;
+import org.p2p.lending.club.api.data.impl.AvailableCash;
 import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
@@ -23,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -53,7 +58,8 @@ public class HttpQueryAPI implements QueryAPI {
 
     /**
      * Used for unit testing.
-     *  @param httpClient the mocking httpClient
+     *
+     * @param httpClient the mocking httpClient
      * @param token      random token String
      * @param investorId
      */
@@ -64,7 +70,27 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
+    public String getInvestorId() {
+        return investorId;
+    }
+
+    @Override
     public List<Note> getOwnedNotes() {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme(SCHEME)
+                    .setHost(HOST)
+                    .setPath(ACCOUNT_PATH + investorId + "/notes")
+                    .build();
+            HttpGet httpGet = new HttpGet(uri);
+            String response = httpGet(httpGet);
+            Type listOfNote = new TypeToken<List<Note>>(){}.getType();
+            List<Note> noteList = JsonSerializer.fromJson(response, listOfNote);
+            LOG.info("Owned number of notes {}", noteList.size());
+            return noteList;
+        } catch (URISyntaxException e) {
+            LOG.error(e, e);
+        }
         return null;
     }
 
@@ -119,8 +145,22 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
-    public double getAvailableCash() {
-        return 0;
+    public AvailableCash getAvailableCash() {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme(SCHEME)
+                    .setHost(HOST)
+                    .setPath(ACCOUNT_PATH + investorId + "/availablecash")
+                    .build();
+            HttpGet httpGet = new HttpGet(uri);
+            String response = httpGet(httpGet);
+            AvailableCash availableCash = JsonSerializer.fromJson(response, AvailableCash.class);
+            LOG.info("Available cash {}", response);
+            return availableCash;
+        } catch (URISyntaxException e) {
+            LOG.error(e, e);
+        }
+        return null;
     }
 
     @Override

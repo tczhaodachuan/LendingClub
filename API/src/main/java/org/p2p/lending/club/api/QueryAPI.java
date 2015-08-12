@@ -1,5 +1,6 @@
 package org.p2p.lending.club.api;
 
+import org.p2p.lending.club.api.data.impl.AvailableCash;
 import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
@@ -13,10 +14,13 @@ public interface QueryAPI {
     String SCHEME = "https";
     String HOST = "api.lendingclub.com";
     String LISTING_NOTES_PATH = "/api/investor/v1/loans/listing";
+    String ACCOUNT_PATH = "/api/investor/v1/accounts/";
     String SHOW_ALL = "showAll";
     String AUTHENTICATION = "Authorization";
     String CONTENT_TYPE = "Content-type";
     String ACCEPT = "Accept";
+
+    String getInvestorId();
 
     List<Note> getOwnedNotes();
 
@@ -24,7 +28,7 @@ public interface QueryAPI {
 
     ListedNotes getAllListedNotes();
 
-    double getAvailableCash();
+    AvailableCash getAvailableCash();
 
     boolean submitTransaction(Transaction transaction);
 

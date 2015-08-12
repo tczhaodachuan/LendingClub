@@ -8,7 +8,7 @@ import org.springframework.context.Lifecycle;
 public interface Consumer extends Lifecycle{
     void start(Listener listener);
 
-    interface Listener<T>
+    interface Listener<T> extends Runnable
     {
         void onMessage(T t);
     }

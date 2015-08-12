@@ -16,9 +16,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by tczhaodachuan on 7/21/2015.
  */
-public class TransactionManager implements Consumer.Listener<Note>, Runnable {
+public class TransactionManager implements Consumer.Listener<Note> {
     private static final Logger LOG = LogManager.getLogger();
-    private final String accountId;
     private final ValueFilter valueFilter;
     private final QueryAPI queryAPI;
     private ExceptionHandler exceptionHandler;
@@ -29,10 +28,9 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
     private int transactionBatchAmount;
     private long transactionBatchDelayTime;
 
-    public TransactionManager(String accountId, ValueFilter valueFilter, QueryAPI queryAPI) {
+    public TransactionManager(ValueFilter valueFilter, QueryAPI queryAPI) {
         this.valueFilter = valueFilter;
         this.queryAPI = queryAPI;
-        this.accountId = accountId;
         blockingQueue = new LinkedBlockingQueue<Note>();
         exceptionHandler = new LogExceptionHandler();
         transactionAuditor = new LogTransactionAuditor();
@@ -42,10 +40,9 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
         requestedAmount = 25;
         transactionBatchAmount = 10;
         transactionBatchDelayTime = 3000;
-        Thread processNotes = new Thread(this);
-        processNotes.setName("ProcessNotes");
-        processNotes.start();
-        isRunning.set(true);
+        Thread thread = new Thread(this);
+        thread.setName("TransactionManager");
+        thread.start();
     }
 
     public boolean isRunning() {
@@ -63,6 +60,7 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
 
     @Override
     public void run() {
+        isRunning.set(true);
         try {
             processNextNote();
         } catch (Exception e) {
@@ -71,26 +69,28 @@ public class TransactionManager implements Consumer.Listener<Note>, Runnable {
     }
 
     private void processNextNote() {
-        Transaction transaction = new Transaction(accountId);
-        transactionAuditor.audit(transaction, "Created empty transaction");
         while (isRunning()) {
-            Note note = blockingQueue.poll();
-            if (valueFilter.isAllowed(note)) {
-                LOG.info("Starting to make an order");
-                Order order = new Order(note, String.valueOf(requestedAmount));
-                transaction.addOrder(order);
-                transactionAuditor.audit(transaction, "an Order added into transaction");
-                if (transaction.getNumberOfOrders() % transactionBatchAmount == 0) {
-                    // submit the batch transaction
-                    submitTransaction(transaction);
-                    // new transaction has been created
-                    transaction = new Transaction(accountId);
-                    try {
+            try {
+                Note note = blockingQueue.take();
+                LOG.info("Polling out one note, loanID {}, noteId {}", note.getLoanId(), note.getNoteId());
+                if (valueFilter.isAllowed(note)) {
+                    Transaction transaction = new Transaction(queryAPI.getInvestorId());
+                    transactionAuditor.audit(transaction, "Created empty transaction");
+                    LOG.info("Starting to make an order");
+                    Order order = new Order(note, String.valueOf(requestedAmount));
+                    transaction.addOrder(order);
+                    transactionAuditor.audit(transaction, "an Order added into transaction");
+                    if (transaction.getNumberOfOrders() % transactionBatchAmount == 0) {
+                        // submit the batch transaction
+                        submitTransaction(transaction);
+                        // new transaction has been created
+                        transaction = new Transaction(queryAPI.getInvestorId());
+
                         Thread.sleep(transactionBatchDelayTime);
-                    } catch (InterruptedException e) {
-                        LOG.warn(e, e);
                     }
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         LOG.info("Stop to process notes");

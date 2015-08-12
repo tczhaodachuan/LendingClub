@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by tczhaodachuan on 7/28/2015.
  */
-public class RestConsumer implements Consumer {
+public class Trader implements Consumer {
     private static final Logger LOG = LogManager.getLogger();
     private final Listener listener;
     private final QueryAPI queryAPI;
@@ -20,7 +20,7 @@ public class RestConsumer implements Consumer {
     private long queryDelayTime = 1 * 60 * 60 * 1000;
     private boolean isRunning = false;
 
-    public RestConsumer(Listener listener, QueryAPI queryAPI) {
+    public Trader(Listener listener, QueryAPI queryAPI) {
         this.listener = listener;
         this.queryAPI = queryAPI;
     }
