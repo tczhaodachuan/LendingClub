@@ -3,6 +3,7 @@ package org.p2p.lending.club.main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.QueryAPI;
+import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.message.Consumer;
 
@@ -37,7 +38,8 @@ public class RestConsumer implements Consumer {
     @Override
     public void start(Listener listener) {
         while (isRunning) {
-            List<Note> noteList = queryAPI.getListedNotes();
+            ListedNotes listedNotes = queryAPI.getListedNotes();
+            List<Note> noteList = listedNotes.getListedNotes();
             if(noteList == null || noteList.isEmpty())
             {
                 // failed to get noteList

@@ -62,6 +62,7 @@ public class JsonSerializerTest {
 
     @Test
     public void testListedNotesDeserializer() {
+        // slash and backSlash will be handled by FileSystem normalize file path.
         try (FileReader fileReader = new FileReader("src/test/resources/noteListed.json");
              BufferedReader bufferedReader = new BufferedReader(fileReader);) {
             StringBuffer sb = new StringBuffer();
@@ -69,8 +70,8 @@ public class JsonSerializerTest {
                 sb.append(line).append("\n");
             });
             ListedNotes listedNotes = JsonSerializer.fromJson(sb.toString(), ListedNotes.class);
-            System.out.println("listedNotes.getAsOfDate() = " + listedNotes.getAsOfDate());
-            System.out.println("listedNotes.getListedNotes().size() = " + listedNotes.getListedNotes().size());
+            assertTrue(listedNotes.getAsOfDate().equals("2015-08-10T17:23:19.122-07:00"));
+            assertTrue(listedNotes.getListedNotes().size() == 155);
         } catch (IOException e) {
             fail(e.toString());
         }

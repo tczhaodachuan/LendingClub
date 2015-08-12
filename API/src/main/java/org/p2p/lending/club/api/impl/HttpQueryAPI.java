@@ -14,9 +14,12 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.QueryAPI;
+import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
+import org.p2p.lending.club.util.JsonSerializer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -33,6 +36,7 @@ public class HttpQueryAPI implements QueryAPI {
     private static final Logger LOG = LogManager.getLogger();
     private final String tokenString;
     private CloseableHttpClient httpClient;
+    private ResponseHandler responseHandler;
 
     // applying thread safe ClientConnManager to HttpClient is important. Cause the @TransactionManager and @InventoryFilter may share
     // the HttpClient at the same time.
@@ -62,7 +66,7 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
-    public List<Note> getListedNotes() {
+    public ListedNotes getListedNotes() {
         try {
             URI uri = new URIBuilder()
                     .setScheme(SCHEME)
@@ -74,10 +78,11 @@ public class HttpQueryAPI implements QueryAPI {
 
             String response = httpGet(httpGet);
             if (response == null) {
-                LOG.fatal("Failed to get listing notes. From API");
-            }
-            else {
-                LOG.info("Get listed notes {}", response);
+                LOG.fatal("Failed to get listed notes. From API");
+            } else {
+                ListedNotes listedNotes = JsonSerializer.fromJson(response.trim(), ListedNotes.class);
+                LOG.info("Get listed notes at date {}, number of notes {}", listedNotes.getAsOfDate(), listedNotes.getListedNotes().size());
+                return listedNotes;
             }
         } catch (URISyntaxException e) {
             LOG.error(e, e);
@@ -86,7 +91,27 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
-    public List<Note> getAllListedNotes() {
+    public ListedNotes getAllListedNotes() {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme(SCHEME)
+                    .setHost(HOST)
+                    .setPath(LISTING_NOTES_PATH)
+                    .setParameter(SHOW_ALL, "true")
+                    .build();
+            HttpGet httpGet = new HttpGet(uri);
+
+            String response = httpGet(httpGet);
+            if (response == null) {
+                LOG.fatal("Failed to get all listed notes. From API");
+            } else {
+                ListedNotes listedNotes = JsonSerializer.fromJson(response.trim(), ListedNotes.class);
+                LOG.info("Get all listed notes at date {}, number of notes {}", listedNotes.getAsOfDate(), listedNotes.getListedNotes().size());
+                return listedNotes;
+            }
+        } catch (URISyntaxException e) {
+            LOG.error(e, e);
+        }
         return null;
     }
 
@@ -105,13 +130,19 @@ public class HttpQueryAPI implements QueryAPI {
         return false;
     }
 
+    public void setResponseHandler(ResponseHandler responseHandler) {
+        this.responseHandler = responseHandler;
+    }
+
     protected String httpGet(HttpGet httpGet) {
         // add token to each get request, since stateless API.
         httpGet.addHeader("Accept-Encoding", "gzip,deflate");
         httpGet.addHeader(ACCEPT, "application/json");
         httpGet.addHeader(AUTHENTICATION, tokenString);
         LOG.info("URI is {}", httpGet.getURI());
-        ResponseHandler responseHandler = new ResponseHandler();
+        if (responseHandler == null) {
+            responseHandler = new ResponseHandler();
+        }
         try {
             String response = httpClient.execute(httpGet, responseHandler);
             return response;
@@ -123,9 +154,6 @@ public class HttpQueryAPI implements QueryAPI {
 
 
     static class ResponseHandler implements org.apache.http.client.ResponseHandler<String> {
-        private final int bufferLength = 1024 * 10;
-        private final int maxCount = 10;
-
         @Override
         public String handleResponse(HttpResponse response) throws IOException {
             StatusLine statusLine = response.getStatusLine();
@@ -139,20 +167,16 @@ public class HttpQueryAPI implements QueryAPI {
             }
 
             ContentType contentType = ContentType.getOrDefault(httpEntity);
-            LOG.info("Response ContentType : {}", contentType.toString());
+            LOG.debug("Response ContentType : {}", contentType.toString());
             Charset charset = Charset.defaultCharset();
-            Reader reader = new InputStreamReader(httpEntity.getContent(), charset);
             StringBuilder sb = new StringBuilder();
-            char[] charArray = new char[bufferLength];
-            int count = 1;
-            while (reader.read(charArray) != -1 && count < maxCount) {
-                sb.append(charArray);
-                count++;
-                charArray = new char[bufferLength * count];
-            }
-
-            if (count >= maxCount) {
-                throw new ClientProtocolException("Response contains too much data");
+            Reader reader = new InputStreamReader(httpEntity.getContent(), charset);
+            try (BufferedReader bufferedReader = new BufferedReader(reader)) {
+                bufferedReader.lines().forEach(line -> {
+                    sb.append(line);
+                });
+            } catch (IOException e) {
+                throw new IOException(e);
             }
 
             return sb.toString();

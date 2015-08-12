@@ -1,5 +1,6 @@
 package org.p2p.lending.club.api;
 
+import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
 
@@ -19,9 +20,9 @@ public interface QueryAPI {
 
     List<Note> getOwnedNotes();
 
-    List<Note> getListedNotes();
+    ListedNotes getListedNotes();
 
-    List<Note> getAllListedNotes();
+    ListedNotes getAllListedNotes();
 
     double getAvailableCash();
 
