@@ -35,29 +35,32 @@ import java.util.List;
 public class HttpQueryAPI implements QueryAPI {
     private static final Logger LOG = LogManager.getLogger();
     private final String tokenString;
+    private final String investorId;
     private CloseableHttpClient httpClient;
     private ResponseHandler responseHandler;
 
     // applying thread safe ClientConnManager to HttpClient is important. Cause the @TransactionManager and @InventoryFilter may share
     // the HttpClient at the same time.
-    public HttpQueryAPI(int maxTotal, String token) {
+    public HttpQueryAPI(int maxTotal, String token, String investorId) {
         PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
         poolingHttpClientConnectionManager.setMaxTotal(maxTotal);
         httpClient = HttpClients.custom()
                 .setConnectionManager(poolingHttpClientConnectionManager)
                 .build();
         tokenString = token;
+        this.investorId = investorId;
     }
 
     /**
      * Used for unit testing.
-     *
-     * @param httpClient the mocking httpClient
+     *  @param httpClient the mocking httpClient
      * @param token      random token String
+     * @param investorId
      */
-    HttpQueryAPI(CloseableHttpClient httpClient, String token) {
+    HttpQueryAPI(CloseableHttpClient httpClient, String token, String investorId) {
         this.httpClient = httpClient;
         this.tokenString = token;
+        this.investorId = investorId;
     }
 
     @Override
