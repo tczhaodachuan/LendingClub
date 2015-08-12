@@ -4,16 +4,80 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-    <bean id="gradeFilter" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
+    <!-- grade filter -->
+    <bean id="A" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
+        <constructor-arg index="0" value="grade"/>
+        <constructor-arg index="1" value="a"/>
+        <constructor-arg index="2" value="equals"/>
+    </bean>
+    <bean id="B" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
         <constructor-arg index="0" value="grade"/>
         <constructor-arg index="1" value="b"/>
         <constructor-arg index="2" value="equals"/>
     </bean>
-    <bean id="loanFilter" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
-        <constructor-arg index="0" value="noteId"/>
-        <constructor-arg index="1" value="1"/>
+    <bean id="C" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
+        <constructor-arg index="0" value="grade"/>
+        <constructor-arg index="1" value="c"/>
         <constructor-arg index="2" value="equals"/>
     </bean>
+    <bean id="D" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
+        <constructor-arg index="0" value="grade"/>
+        <constructor-arg index="1" value="d"/>
+        <constructor-arg index="2" value="equals"/>
+    </bean>
+
+    <util:list id="grades" value-type="org.p2p.lending.club.api.filter.ValueFilter">
+        <ref bean="A"/>
+        <ref bean="B"/>
+        <ref bean="C"/>
+        <ref bean="D"/>
+    </util:list>
+
+    <bean id="gradeFilter" class="org.p2p.lending.club.api.filter.impl.LogicalValueFilter">
+        <constructor-arg index="0" value="or"/>
+        <constructor-arg index="1" ref="grades"/>
+    </bean>
+    <!-- grade filter -->
+    <!-- dti filter -->
+    <bean id="dtiFilter" class="org.p2p.lending.club.api.filter.impl.SingleValueDoubleFilter">
+        <constructor-arg index="0" value="dti"/>
+        <constructor-arg index="1" value="20.0"/>
+        <constructor-arg index="2" value="gte"/>
+    </bean>
+    <!-- dti filter -->
+    <!-- term filter -->
+    <bean id="termFilter" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
+        <constructor-arg index="0" value="term"/>
+        <constructor-arg index="1" value="36"/>
+        <constructor-arg index="2" value="equals"/>
+    </bean>
+    <!-- term filter -->
+
+    <!-- fico filter -->
+    <bean id="lowFico" class="org.p2p.lending.club.api.filter.impl.SingleValueIntegerFilter">
+        <constructor-arg index="0" value="ficoRangeLow"/>
+        <constructor-arg index="1" value="660"/>
+        <constructor-arg index="2" value="gte"/>
+    </bean>
+
+    <bean id="highFico" class="org.p2p.lending.club.api.filter.impl.SingleValueIntegerFilter">
+        <constructor-arg index="0" value="ficoRangeLow"/>
+        <constructor-arg index="1" value="850"/>
+        <constructor-arg index="2" value="lte"/>
+    </bean>
+
+    <util:list id="ficoRange" value-type="org.p2p.lending.club.api.filter.ValueFilter">
+        <ref bean="lowFico"/>
+        <ref bean="highFico"/>
+    </util:list>
+
+    <bean id="ficoFilter" class="org.p2p.lending.club.api.filter.impl.LogicalValueFilter">
+        <constructor-arg index="0" value="and"/>
+        <constructor-arg index="1" ref="ficoRange"/>
+    </bean>
+    <!-- fico filter -->
+
+    <!-- summarize filter -->
     <bean id="logicFilter" class="org.p2p.lending.club.api.filter.impl.LogicalValueFilter">
         <constructor-arg index="0" value="and"/>
         <constructor-arg index="1" ref="filters"/>
@@ -21,6 +85,9 @@
 
     <util:list id="filters" value-type="org.p2p.lending.club.api.filter.ValueFilter">
         <ref bean="gradeFilter"/>
-        <ref bean="loanFilter"/>
+        <ref bean="dtiFilter"/>
+        <ref bean="termFilter"/>
+        <ref bean="ficoFilter"/>
     </util:list>
+    <!-- summarize filter -->
 </beans>

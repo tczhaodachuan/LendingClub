@@ -71,15 +71,16 @@ public class TransactionManager implements Consumer.Listener<Note> {
     private void processNextNote() {
         Transaction transaction = new Transaction(queryAPI.getInvestorId());
         transactionAuditor.audit(transaction, "Created empty transaction");
+        int count = 0;
         while (isRunning()) {
             try {
                 Note note = blockingQueue.take();
-                LOG.info("Polling out one note, loanID {}, noteId {}", note.getLoanId(), note.getNoteId());
+                LOG.info("Count {}, loanID {}, noteId {}", ++count, note.getLoanId(), note.getNoteId());
                 if (valueFilter.isAllowed(note)) {
                     LOG.info("Starting to make an order");
                     Order order = new Order(note, String.valueOf(requestedAmount));
                     transaction.addOrder(order);
-                    transactionAuditor.audit(transaction, "an Order added into transaction");
+                    transactionAuditor.audit(transaction, "an Order " + order.getNote().getLoanId() + " has been added into transaction " + transaction.getTrasactionId());
                     if (transaction.getNumberOfOrders() % transactionBatchAmount == 0) {
                         // submit the batch transaction
                         submitTransaction(transaction);

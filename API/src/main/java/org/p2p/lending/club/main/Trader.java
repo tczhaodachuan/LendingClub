@@ -38,7 +38,7 @@ public class Trader implements Consumer {
     @Override
     public void start(Listener listener) {
         while (isRunning) {
-            ListedNotes listedNotes = queryAPI.getListedNotes();
+            ListedNotes listedNotes = queryAPI.getAllListedNotes();
             List<Note> noteList = listedNotes.getListedNotes();
             if(noteList == null || noteList.isEmpty())
             {
