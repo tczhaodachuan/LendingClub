@@ -8,6 +8,7 @@ import org.p2p.lending.club.api.order.Order;
 
 import java.util.HashMap;
 
+import static org.mockito.AdditionalMatchers.geq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -36,11 +37,11 @@ public class LogTransactionAuditorTest {
         logTransactionAuditor.audit(transaction, "create transaction");
 
         verify(mockLogger).isDebugEnabled();
-        verify(mockLogger).info(eq("Transaction {} with message: {}"), eq(1), eq("create transaction"));
+        verify(mockLogger).info(eq("Transaction {} with message: {}"), geq(1), eq("create transaction"));
 
         when(mockLogger.isDebugEnabled()).thenReturn(true);
         logTransactionAuditor.audit(transaction, "starting to submit transaction");
-        verify(mockLogger).info(eq("Transaction {} with message: {}"), eq(1), eq("starting to submit transaction"));
+        verify(mockLogger).info(eq("Transaction {} with message: {}"), geq(1), eq("starting to submit transaction"));
         verify(mockLogger).debug(anyString(), anyString());
     }
 }

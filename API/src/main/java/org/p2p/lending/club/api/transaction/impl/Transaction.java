@@ -30,24 +30,24 @@ public class Transaction {
     public void addOrder(Order order) {
         //assertNotNull(order);
 
-        if (orderNames.contains(order.getNote().getNoteId())) {
-            LOG.warn("NoteId {} has already been created ", order.getNote().getNoteId());
+        if (orderNames.contains(order.getNote().getLoanId())) {
+            LOG.warn("loanId {} has already been created ", order.getNote().getLoanId());
             return;
         }
 
-        orderNames.add(order.getNote().getNoteId());
+        orderNames.add(order.getNote().getLoanId());
         orders.add(order);
-        LOG.info("NoteId {} has been added into transaction {} ", order.getNote().getNoteId(), trasactionId.get());
+        LOG.info("loanId {} has been added into transaction {} ", order.getNote().getLoanId(), trasactionId.get());
     }
 
     public void removeOrder(Order order) {
         //assertNotNull(order);
 
-        orderNames.remove(order.getNote().getNoteId());
+        orderNames.remove(order.getNote().getLoanId());
         int index = -1;
         for (int i = 0; i < orders.size(); i++) {
             Order o = orders.get(i);
-            if (o.getNote().getNoteId().equals(order.getNote().getNoteId())) {
+            if (o.getNote().getLoanId().equals(order.getNote().getLoanId())) {
                 index = i;
                 break;
             }

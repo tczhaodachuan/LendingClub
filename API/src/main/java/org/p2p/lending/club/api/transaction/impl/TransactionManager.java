@@ -38,7 +38,7 @@ public class TransactionManager implements Consumer.Listener<Note> {
 
     public void init() {
         requestedAmount = 25;
-        transactionBatchAmount = 10;
+        transactionBatchAmount = 100;
         transactionBatchDelayTime = 3000;
         Thread thread = new Thread(this);
         thread.setName("TransactionManager");
@@ -69,13 +69,13 @@ public class TransactionManager implements Consumer.Listener<Note> {
     }
 
     private void processNextNote() {
+        Transaction transaction = new Transaction(queryAPI.getInvestorId());
+        transactionAuditor.audit(transaction, "Created empty transaction");
         while (isRunning()) {
             try {
                 Note note = blockingQueue.take();
                 LOG.info("Polling out one note, loanID {}, noteId {}", note.getLoanId(), note.getNoteId());
                 if (valueFilter.isAllowed(note)) {
-                    Transaction transaction = new Transaction(queryAPI.getInvestorId());
-                    transactionAuditor.audit(transaction, "Created empty transaction");
                     LOG.info("Starting to make an order");
                     Order order = new Order(note, String.valueOf(requestedAmount));
                     transaction.addOrder(order);
