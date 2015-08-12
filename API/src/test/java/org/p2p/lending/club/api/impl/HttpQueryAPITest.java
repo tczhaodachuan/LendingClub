@@ -41,7 +41,6 @@ public class HttpQueryAPITest {
 
     @Before
     public void setUp() throws Exception {
-        //httpQueryAPI = new HttpQueryAPI(10, "M3Pf8h9Dsl+37QwDsNEUYn63aj8=");
         mockHttpClient = mock(CloseableHttpClient.class);
         httpQueryAPI = new HttpQueryAPI(mockHttpClient, "mockToken");
     }
