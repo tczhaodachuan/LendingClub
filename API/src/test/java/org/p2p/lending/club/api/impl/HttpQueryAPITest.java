@@ -2,6 +2,7 @@ package org.p2p.lending.club.api.impl;
 
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -9,13 +10,12 @@ import org.junit.Test;
 import org.p2p.lending.club.api.data.impl.AvailableCash;
 import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.Portfolio;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -28,6 +28,7 @@ import static org.mockito.Mockito.*;
 public class HttpQueryAPITest {
     private static String LISTED_NOTE_JSON;
     private static String OWNED_NOTE_JSON;
+    private static String CREATED_PORTFOLIO_JSON;
     private HttpQueryAPI httpQueryAPI;
     private CloseableHttpClient mockHttpClient;
 
@@ -51,6 +52,17 @@ public class HttpQueryAPITest {
                 sb.append(line).append("\n");
             });
             OWNED_NOTE_JSON = sb.toString();
+        } catch (IOException e) {
+            fail(e.toString());
+        }
+
+        try (FileReader fileReader = new FileReader("src/test/resources/portfolioCreated.JSON");
+             BufferedReader bufferedReader = new BufferedReader(fileReader);) {
+            StringBuffer sb = new StringBuffer();
+            bufferedReader.lines().forEach(line -> {
+                sb.append(line).append("\n");
+            });
+            CREATED_PORTFOLIO_JSON = sb.toString();
         } catch (IOException e) {
             fail(e.toString());
         }
@@ -101,11 +113,15 @@ public class HttpQueryAPITest {
 
     @Test
     public void testSubmitTransaction() throws Exception {
-        //httpQueryAPI = new HttpQueryAPI(10, "M3Pf8h9Dsl+37QwDsNEUYn63aj8=", "51682970");
     }
 
     @Test
     public void testCreatePortfolio() throws Exception {
-
+        when(mockHttpClient.execute(any(HttpPost.class), any(ResponseHandler.class))).thenReturn(CREATED_PORTFOLIO_JSON);
+        Portfolio portfolio = httpQueryAPI.createPortfolio("whatever", "testing");
+        verify(mockHttpClient).execute(any(HttpPost.class), any(ResponseHandler.class));
+        assertTrue(portfolio.getPortfolioId() == 58062042);
+        assertTrue(portfolio.getPortfolioName().equals("2015-08-16 19 02"));
+        assertTrue(portfolio.getPortfolioDescription().equals("Auto created portfolio, this portfolios is created by API."));
     }
 }

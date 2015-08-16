@@ -1,7 +1,6 @@
 package org.p2p.lending.club.api.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -9,24 +8,27 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.QueryAPI;
 import org.p2p.lending.club.api.data.impl.AvailableCash;
 import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.Portfolio;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
 import org.p2p.lending.club.util.JsonSerializer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -84,7 +86,8 @@ public class HttpQueryAPI implements QueryAPI {
                     .build();
             HttpGet httpGet = new HttpGet(uri);
             String response = httpGet(httpGet);
-            Type listOfNote = new TypeToken<List<Note>>(){}.getType();
+            Type listOfNote = new TypeToken<List<Note>>() {
+            }.getType();
             List<Note> noteList = JsonSerializer.fromJson(response, listOfNote);
             LOG.info("Owned number of notes {}", noteList.size());
             return noteList;
@@ -169,8 +172,27 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
-    public boolean createPortfolio(String investorId, String portfolioName, String portfolioDescription) {
-        return false;
+    public Portfolio createPortfolio(String portfolioName, String portfolioDescription) {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme(SCHEME)
+                    .setHost(HOST)
+                    .setPath(ACCOUNT_PATH + investorId + "/portfolios")
+                    .build();
+            HttpPost httpPost = new HttpPost(uri);
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty(AID, investorId);
+            jsonObject.addProperty(PORTFOLIO_NAME, portfolioName);
+            jsonObject.addProperty(PORTFOLIOD_ESCRIPTION, "Auto created portfolio, this portfolios is created by API.");
+            httpPost.setEntity(new ByteArrayEntity(jsonObject.toString().getBytes("UTF8")));
+            String response = httpPost(httpPost);
+            LOG.info("Create portfolio {}", response);
+            Portfolio portfolio = JsonSerializer.fromJson(response, Portfolio.class);
+            return portfolio;
+        } catch (URISyntaxException | UnsupportedEncodingException e) {
+            LOG.error(e, e);
+        }
+        return null;
     }
 
     public void setResponseHandler(ResponseHandler responseHandler) {
@@ -188,6 +210,25 @@ public class HttpQueryAPI implements QueryAPI {
         }
         try {
             String response = httpClient.execute(httpGet, responseHandler);
+            return response;
+        } catch (IOException e) {
+            LOG.error(e, e);
+        }
+        return null;
+    }
+
+    protected String httpPost(HttpPost httpPost) {
+        // add token to each post request, since stateless API.
+        httpPost.addHeader("Accept-Encoding", "gzip,deflate");
+        httpPost.addHeader(ACCEPT, "application/json");
+        httpPost.addHeader(CONTENT_TYPE,"application/json");
+        httpPost.addHeader(AUTHENTICATION, tokenString);
+        LOG.info("URI is {}", httpPost.getURI());
+        if (responseHandler == null) {
+            responseHandler = new ResponseHandler();
+        }
+        try {
+            String response = httpClient.execute(httpPost, responseHandler);
             return response;
         } catch (IOException e) {
             LOG.error(e, e);

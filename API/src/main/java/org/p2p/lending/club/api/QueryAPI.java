@@ -3,6 +3,7 @@ package org.p2p.lending.club.api;
 import org.p2p.lending.club.api.data.impl.AvailableCash;
 import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.Portfolio;
 import org.p2p.lending.club.api.transaction.impl.Transaction;
 
 import java.util.List;
@@ -20,6 +21,11 @@ public interface QueryAPI {
     String CONTENT_TYPE = "Content-type";
     String ACCEPT = "Accept";
 
+    String AID = "aid";
+    String PORTFOLIO_NAME = "portfolioName";
+    String PORTFOLIOD_ESCRIPTION = "portfolioDescription";
+
+
     String getInvestorId();
 
     List<Note> getOwnedNotes();
@@ -32,5 +38,5 @@ public interface QueryAPI {
 
     boolean submitTransaction(Transaction transaction);
 
-    boolean createPortfolio(String investorId, String portfolioName, String portfolioDescription);
+    Portfolio createPortfolio(String portfolioName, String portfolioDescription);
 }

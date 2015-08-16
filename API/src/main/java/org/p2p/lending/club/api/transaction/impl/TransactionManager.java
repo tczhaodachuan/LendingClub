@@ -2,6 +2,9 @@ package org.p2p.lending.club.api.transaction.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.p2p.lending.club.api.QueryAPI;
 import org.p2p.lending.club.api.data.impl.Note;
 import org.p2p.lending.club.api.filter.ValueFilter;
@@ -100,8 +103,15 @@ public class TransactionManager implements Consumer.Listener<Note> {
     protected void submitTransaction(Transaction transaction) {
         transactionAuditor.audit(transaction, "Starting to submit transaction");
         try {
-            queryAPI.submitTransaction(transaction);
-            transactionAuditor.audit(transaction, "Successfully submitted transaction");
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH mm");
+            DateTime dateTime = new DateTime();
+            String dateStr = fmt.print(dateTime);
+            if (queryAPI.createPortfolio(dateStr, "This portfolios created by TransactionManager") != null) {
+                queryAPI.submitTransaction(transaction);
+                transactionAuditor.audit(transaction, "Successfully submitted transaction");
+            } else {
+                transactionAuditor.audit(transaction, "Failed to create a portfolio");
+            }
         } catch (Exception e) {
             transactionAuditor.audit(transaction, "Failed to submit transaction " + e.getMessage());
             exceptionHandler.onException(e, this);
