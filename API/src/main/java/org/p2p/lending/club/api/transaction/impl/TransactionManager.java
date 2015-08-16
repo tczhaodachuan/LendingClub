@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.p2p.lending.club.api.QueryAPI;
 import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.data.impl.Portfolio;
 import org.p2p.lending.club.api.filter.ValueFilter;
 import org.p2p.lending.club.api.order.Order;
 import org.p2p.lending.club.api.transaction.ExceptionHandler;
@@ -30,6 +31,7 @@ public class TransactionManager implements Consumer.Listener<Note> {
     private int requestedAmount;
     private int transactionBatchAmount;
     private long transactionBatchDelayTime;
+    private Portfolio portfolio;
 
     public TransactionManager(ValueFilter valueFilter, QueryAPI queryAPI) {
         this.valueFilter = valueFilter;
@@ -65,10 +67,21 @@ public class TransactionManager implements Consumer.Listener<Note> {
     public void run() {
         isRunning.set(true);
         try {
-            processNextNote();
+            if (createPortfolio()) {
+                processNextNote();
+            }
         } catch (Exception e) {
             exceptionHandler.onException(e, this);
         }
+    }
+
+    private boolean createPortfolio() {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH mm");
+        DateTime dateTime = new DateTime();
+        String dateStr = fmt.print(dateTime);
+        portfolio = queryAPI.createPortfolio(dateStr, "This portfolios created by TransactionManager");
+
+        return portfolio != null;
     }
 
     private void processNextNote() {
@@ -82,6 +95,7 @@ public class TransactionManager implements Consumer.Listener<Note> {
                 if (valueFilter.isAllowed(note)) {
                     LOG.info("Starting to make an order");
                     Order order = new Order(note, String.valueOf(requestedAmount));
+                    order.setPortfolioId(portfolio.getPortfolioId());
                     transaction.addOrder(order);
                     transactionAuditor.audit(transaction, "an Order " + order.getNote().getLoanId() + " has been added into transaction " + transaction.getTrasactionId());
                     if (transaction.getNumberOfOrders() % transactionBatchAmount == 0) {
@@ -103,15 +117,8 @@ public class TransactionManager implements Consumer.Listener<Note> {
     protected void submitTransaction(Transaction transaction) {
         transactionAuditor.audit(transaction, "Starting to submit transaction");
         try {
-            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH mm");
-            DateTime dateTime = new DateTime();
-            String dateStr = fmt.print(dateTime);
-            if (queryAPI.createPortfolio(dateStr, "This portfolios created by TransactionManager") != null) {
-                queryAPI.submitTransaction(transaction);
-                transactionAuditor.audit(transaction, "Successfully submitted transaction");
-            } else {
-                transactionAuditor.audit(transaction, "Failed to create a portfolio");
-            }
+            queryAPI.submitTransaction(transaction);
+            transactionAuditor.audit(transaction, "Successfully submitted transaction");
         } catch (Exception e) {
             transactionAuditor.audit(transaction, "Failed to submit transaction " + e.getMessage());
             exceptionHandler.onException(e, this);

@@ -16,12 +16,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Transaction {
     private static AtomicInteger trasactionId = new AtomicInteger();
     private static final Logger LOG = LogManager.getLogger();
-    private final String accountId;
+    private final String aid;
     private final Set<String> orderNames;
     private List<Order> orders;
 
-    public Transaction(String accountId) {
-        this.accountId = accountId;
+    public Transaction(String aid) {
+        this.aid = aid;
         orderNames = new HashSet<>();
         orders = new ArrayList<>();
         LOG.info("Transaction {} has been created ", trasactionId.incrementAndGet());
@@ -66,7 +66,11 @@ public class Transaction {
         return orders.size();
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getAid() {
+        return aid;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 }

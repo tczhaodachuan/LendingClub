@@ -7,25 +7,29 @@ import org.p2p.lending.club.api.data.impl.Note;
  */
 public class Order {
     private final Note note;
-    private final String requestedAccount;
+    private final String requestedAmount;
     private final long createTime;
-    private String portfolioId;
+    private int portfolioId;
 
-    public Order(Note note, String requestedAccount) {
+    public Order(Note note, String requestedAmount) {
         this.note = note;
-        this.requestedAccount = requestedAccount;
+        this.requestedAmount = requestedAmount;
         this.createTime = System.currentTimeMillis();
+    }
+
+    public void setPortfolioId(int portfolioId) {
+        this.portfolioId = portfolioId;
     }
 
     public Note getNote() {
         return note;
     }
 
-    public String getRequestedAccount() {
-        return requestedAccount;
+    public String getRequestedAmount() {
+        return requestedAmount;
     }
 
-    public String getPortfolioId() {
+    public int getPortfolioId() {
         return portfolioId;
     }
 

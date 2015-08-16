@@ -22,6 +22,8 @@ import java.util.Set;
  * "loanStatusDate":"2013-05-20T13:13:53.000-07:00"
  */
 public enum EnumNote {
+    REQUESTED_AMOUNT("requestedAmount"),
+    PORTFOLIO_ID("portfolioId"),
     // below are for owned notes enums
     LOAN_ID("loanId"),
     NOTE_ID("noteId"),

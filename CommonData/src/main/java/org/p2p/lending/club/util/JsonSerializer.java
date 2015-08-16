@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.p2p.lending.club.api.data.impl.ListedNotes;
 import org.p2p.lending.club.api.data.impl.Note;
+import org.p2p.lending.club.api.transaction.impl.Transaction;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -25,6 +26,8 @@ public class JsonSerializer {
                 .registerTypeAdapter(ListedNotes.class, new ListedNotesDeserializer())
                 // {@List<Note>} class deserializer registration
                 .registerTypeAdapter(listOfNote,new ListOfNoteDeserializer())
+                // {@Transaction} class serializer registration
+                .registerTypeAdapter(Transaction.class, new TransactionSerializer())
                 .create();
 
     }
