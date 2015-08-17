@@ -33,6 +33,7 @@ public class HttpQueryAPITest {
     private static String OWNED_NOTE_JSON;
     private static String CREATED_PORTFOLIO_JSON;
     private static String OWNED_PORTFOLIO_JSON;
+    private static String SUBMIT_ORDER_JSON;
     private HttpQueryAPI httpQueryAPI;
     private CloseableHttpClient mockHttpClient;
 
@@ -78,6 +79,17 @@ public class HttpQueryAPITest {
                 sb.append(line).append("\n");
             });
             OWNED_PORTFOLIO_JSON = sb.toString();
+        } catch (IOException e) {
+            fail(e.toString());
+        }
+
+        try (FileReader fileReader = new FileReader("src/test/resources/submitOrder.json");
+             BufferedReader bufferedReader = new BufferedReader(fileReader);) {
+            StringBuffer sb = new StringBuffer();
+            bufferedReader.lines().forEach(line -> {
+                sb.append(line).append("\n");
+            });
+            SUBMIT_ORDER_JSON = sb.toString();
         } catch (IOException e) {
             fail(e.toString());
         }
@@ -128,13 +140,14 @@ public class HttpQueryAPITest {
 
     @Test
     public void testSubmitTransaction() throws Exception {
-        httpQueryAPI = new HttpQueryAPI(10, "acYnrgakzqRMvDkmolYiy2euT+Y=", "51682970");
         Note note = new Note("58271093", "58271093", new HashMap<>());
         Order order = new Order(note, "25");
         order.setPortfolioId(58062043);
         Transaction transaction = new Transaction("51682970");
         transaction.addOrder(order);
-        //boolean result = httpQueryAPI.submitTransaction(transaction);
+        when(mockHttpClient.execute(any(HttpPost.class), any(ResponseHandler.class))).thenReturn(SUBMIT_ORDER_JSON);
+        httpQueryAPI.submitTransaction(transaction);
+        verify(mockHttpClient).execute(any(HttpPost.class), any(ResponseHandler.class));
     }
 
     @Test
