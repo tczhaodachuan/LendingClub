@@ -28,8 +28,8 @@ public class LogTransactionAuditorTest {
     @Test
     public void testAudit() throws Exception {
         Transaction transaction = new Transaction("12345");
-        Order order1 = new Order(new Note("1", "1.1", new HashMap<>()), "123456");
-        Order order2 = new Order(new Note("2", "1.2", new HashMap<>()), "123456");
+        Order order1 = new Order(new Note("1", "11", new HashMap<>()), "123456");
+        Order order2 = new Order(new Note("2", "12", new HashMap<>()), "123456");
         transaction.addOrder(order1);
         transaction.addOrder(order2);
         when(mockLogger.isDebugEnabled()).thenReturn(false);
