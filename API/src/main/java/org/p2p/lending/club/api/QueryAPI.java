@@ -36,7 +36,10 @@ public interface QueryAPI {
 
     AvailableCash getAvailableCash();
 
+    List<Portfolio> getPortfolios();
+
     boolean submitTransaction(Transaction transaction);
 
     Portfolio createPortfolio(String portfolioName, String portfolioDescription);
+
 }

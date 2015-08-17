@@ -40,7 +40,6 @@ public class TransactionSerializer implements com.google.gson.JsonSerializer<Tra
             jsonArray.add(jsonElement);
         });
         jsonObject.add("orders", jsonArray);
-        System.out.println("jsonObject = " + jsonObject);
         return jsonObject;
     }
 }

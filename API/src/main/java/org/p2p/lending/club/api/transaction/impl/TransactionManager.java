@@ -43,8 +43,8 @@ public class TransactionManager implements Consumer.Listener<Note> {
 
     public void init() {
         requestedAmount = 25;
-        transactionBatchAmount = 100;
-        transactionBatchDelayTime = 3000;
+        transactionBatchAmount = 10;
+        transactionBatchDelayTime = 30000;
         Thread thread = new Thread(this);
         thread.setName("TransactionManager");
         thread.start();
@@ -117,7 +117,7 @@ public class TransactionManager implements Consumer.Listener<Note> {
     protected void submitTransaction(Transaction transaction) {
         transactionAuditor.audit(transaction, "Starting to submit transaction");
         try {
-            queryAPI.submitTransaction(transaction);
+            //queryAPI.submitTransaction(transaction);
             transactionAuditor.audit(transaction, "Successfully submitted transaction");
         } catch (Exception e) {
             transactionAuditor.audit(transaction, "Failed to submit transaction " + e.getMessage());

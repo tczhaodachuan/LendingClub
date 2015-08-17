@@ -12,12 +12,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.p2p.lending.club.api.QueryAPI;
@@ -167,7 +164,42 @@ public class HttpQueryAPI implements QueryAPI {
     }
 
     @Override
+    public List<Portfolio> getPortfolios() {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme(SCHEME)
+                    .setHost(HOST)
+                    .setPath(ACCOUNT_PATH + investorId + "/portfolios")
+                    .build();
+            HttpGet httpGet = new HttpGet(uri);
+            String response = httpGet(httpGet);
+            LOG.info("Portfolios {} ", response);
+            Type listOfPortfolio = new TypeToken<List<Portfolio>>() {
+            }.getType();
+            List<Portfolio> portfolios = JsonSerializer.fromJson(response, listOfPortfolio);
+            return portfolios;
+        } catch (URISyntaxException e) {
+            LOG.error(e, e);
+        }
+        return null;
+    }
+
+    @Override
     public boolean submitTransaction(Transaction transaction) {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme(SCHEME)
+                    .setHost(HOST)
+                    .setPath(ACCOUNT_PATH + investorId + "/orders")
+                    .build();
+            HttpPost httpPost = new HttpPost(uri);
+            String json = JsonSerializer.toGeneralJson(transaction);
+            httpPost.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
+            String response = httpPost(httpPost);
+            LOG.info("Submit order {}", response);
+        } catch (URISyntaxException | UnsupportedEncodingException e) {
+            LOG.error(e, e);
+        }
         return false;
     }
 
@@ -221,7 +253,7 @@ public class HttpQueryAPI implements QueryAPI {
         // add token to each post request, since stateless API.
         httpPost.addHeader("Accept-Encoding", "gzip,deflate");
         httpPost.addHeader(ACCEPT, "application/json");
-        httpPost.addHeader(CONTENT_TYPE,"application/json");
+        httpPost.addHeader(CONTENT_TYPE, "application/json");
         httpPost.addHeader(AUTHENTICATION, tokenString);
         LOG.info("URI is {}", httpPost.getURI());
         if (responseHandler == null) {

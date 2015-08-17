@@ -75,6 +75,6 @@ public class TransactionTest {
         order.setPortfolioId(12345);
         transaction.addOrder(order);
 
-        JsonSerializer.toGeneralJson(transaction);
+        System.out.println(JsonSerializer.toGeneralJson(transaction));
     }
 }
