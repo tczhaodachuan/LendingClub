@@ -15,8 +15,6 @@ build/
 .gradle/
 .idea/
 *.iml
-column-filter.ipr
-column-filter.iws
 
 out/
 
