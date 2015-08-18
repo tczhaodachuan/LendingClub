@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by tczhaodachuan on 8/16/2015.
+ * This class is translated based on the return JSON data structure.
  */
 public class OrderResponse {
     private final String orderInstructId;

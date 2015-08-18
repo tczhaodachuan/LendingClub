@@ -4,6 +4,10 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    <!-- inventory filter -->
+    <bean id="inventoryFilter" class="org.p2p.lending.club.api.filter.impl.InventoryFilter">
+    </bean>
+    <!-- inventory filter -->
     <!-- grade filter -->
     <bean id="A" class="org.p2p.lending.club.api.filter.impl.SingleValueStringFilter">
         <constructor-arg index="0" value="grade"/>
@@ -88,6 +92,7 @@
         <ref bean="dtiFilter"/>
         <ref bean="termFilter"/>
         <ref bean="ficoFilter"/>
+        <ref bean="inventoryFilter"/>
     </util:list>
     <!-- summarize filter -->
 </beans>

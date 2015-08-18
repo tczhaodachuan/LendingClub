@@ -9,8 +9,8 @@
 
     <bean id="queryAPI" class="org.p2p.lending.club.api.impl.HttpQueryAPI">
         <constructor-arg index="0" type="int" value="10"/>
-        <constructor-arg index="1" type="java.lang.String" value="wrong"/>
-        <constructor-arg index="2" type="java.lang.String" value="fake"/>
+        <constructor-arg index="1" type="java.lang.String" value="what"/>
+        <constructor-arg index="2" type="java.lang.String" value="nothing"/>
     </bean>
     <bean id="transactionManager" class="org.p2p.lending.club.api.transaction.impl.TransactionManager" init-method="init">
         <constructor-arg index="0" ref="logicFilter"/>
@@ -20,6 +20,7 @@
     <bean id="trader" class="org.p2p.lending.club.main.Trader" init-method="init">
         <constructor-arg index="0" ref="transactionManager"/>
         <constructor-arg index="1" ref="queryAPI"/>
+        <constructor-arg index="2" ref="inventoryFilter"/>
     </bean>
 
     <import resource="classpath:high-grade-filter-context.xml"/>
